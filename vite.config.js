@@ -1,24 +1,21 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
-import { resolve } from 'path'
+import tailwindcss from '@tailwindcss/vite'
+import { VitePWA } from 'vite-plugin-pwa'
 
 export default defineConfig({
-  plugins: [react()],
-  resolve: {
-    alias: {
-      // This makes ALL imports work regardless of folder depth
-      '../../lib/supabase': resolve(__dirname, 'lib/supabase.js'),
-      '../lib/supabase': resolve(__dirname, 'lib/supabase.js'),
-      './lib/supabase': resolve(__dirname, 'lib/supabase.js'),
-      '../../components/Chatbot': resolve(__dirname, 'Chatbot.jsx'),
-      '../components/Chatbot': resolve(__dirname, 'Chatbot.jsx'),
-      './components/Chatbot': resolve(__dirname, 'Chatbot.jsx'),
-      '../../components/Navbar': resolve(__dirname, 'Navbar.jsx'),
-      '../../components/Footer': resolve(__dirname, 'Footer.jsx'),
-      '../components/Navbar': resolve(__dirname, 'Navbar.jsx'),
-      '../components/Footer': resolve(__dirname, 'Footer.jsx'),
-    }
-  },
+  plugins: [
+    react(),
+    tailwindcss(),
+    VitePWA({
+      registerType: 'autoUpdate',
+      manifest: {
+        name: 'Don Bosco Public School Hathaura',
+        short_name: 'Don Bosco',
+        theme_color: '#0066CC',
+      }
+    })
+  ],
   build: {
     outDir: 'dist',
   }

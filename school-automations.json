@@ -1,0 +1,341 @@
+[
+  {
+    "name": "Attendance Alert to Parents",
+    "active": true,
+    "nodes": [
+      {
+        "name": "Webhook (Supabase Attendance)",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 1,
+        "position": [250, 300],
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "attendance-alert",
+          "options": {}
+        }
+      },
+      {
+        "name": "Check Consecutive Absences",
+        "type": "n8n-nodes-base.function",
+        "typeVersion": 1,
+        "position": [450, 300],
+        "parameters": {
+          "functionCode": "// Get student_id and attendance status from webhook\nconst studentId = $input.first().json.student_id;\nconst status = $input.first().json.status;\nconst studentName = $input.first().json.student_name;\nconst parentPhone = $input.first().json.parent_phone;\n\n// Query Supabase for recent absences\nconst query = `SELECT COUNT(*) as absences FROM attendance WHERE student_id = '${studentId}' AND status = 'absent' AND date > CURRENT_DATE - 30`;\n\nreturn {\n  student_id: studentId,\n  student_name: studentName,\n  parent_phone: parentPhone,\n  status: status,\n  consecutive_absences: 3 // will be replaced by Supabase query result\n};"
+        }
+      },
+      {
+        "name": "Route by Absence Count",
+        "type": "n8n-nodes-base.switch",
+        "typeVersion": 1,
+        "position": [650, 300],
+        "parameters": {
+          "dataType": "number",
+          "value1": "={{ $json.consecutive_absences }}",
+          "rules": [
+            { "value": 1, "output": 0 },
+            { "value": 2, "output": 0 },
+            { "value": 3, "output": 1 }
+          ]
+        }
+      },
+      {
+        "name": "Send WhatsApp Alert (1st absence)",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 3,
+        "position": [850, 250],
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.interakt.ai/v1/public/message/",
+          "authentication": "genericCredentialType",
+          "genericAuthType": "httpHeaderAuth",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              { "name": "Authorization", "value": "=Bearer {{ $credentials.interaktApiKey }}" },
+              { "name": "Content-Type", "value": "application/json" }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              { "name": "countryCode", "value": "+91" },
+              { "name": "phoneNumber", "value": "={{ $json.parent_phone }}" },
+              { "name": "type", "value": "Template" },
+              { "name": "template", "value": "attendance_alert" },
+              { "name": "data", "value": "={\"student_name\":\"{{ $json.student_name }}\",\"date\":\"{{ $today }}\"}" }
+            ]
+          }
+        }
+      },
+      {
+        "name": "Send Escalated Alert (3+ absences)",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 3,
+        "position": [850, 400],
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.interakt.ai/v1/public/message/",
+          "authentication": "genericCredentialType",
+          "genericAuthType": "httpHeaderAuth",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              { "name": "Authorization", "value": "=Bearer {{ $credentials.interaktApiKey }}" },
+              { "name": "Content-Type", "value": "application/json" }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              { "name": "countryCode", "value": "+91" },
+              { "name": "phoneNumber", "value": "={{ $json.parent_phone }}" },
+              { "name": "type", "value": "Template" },
+              { "name": "template", "value": "attendance_escalated" },
+              { "name": "data", "value": "={\"student_name\":\"{{ $json.student_name }}\",\"absences\":\"{{ $json.consecutive_absences }}\"}" }
+            ]
+          }
+        }
+      },
+      {
+        "name": "Log to Supabase",
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2,
+        "position": [1050, 300],
+        "parameters": {
+          "operation": "insert",
+          "schema": "public",
+          "table": "notifications",
+          "dataToInsert": "defineBelow",
+          "values": {
+            "values": [
+              { "column": "recipient_type", "value": "= 'student'" },
+              { "column": "channel", "value": "= 'whatsapp'" },
+              { "column": "title", "value": "= 'Attendance Alert'" },
+              { "column": "message", "value": "= `Alert sent for ${$json.student_name}`" },
+              { "column": "status", "value": "= 'sent'" }
+            ]
+          }
+        }
+      }
+    ],
+    "connections": {
+      "Webhook (Supabase Attendance)": { "main": [[ { "node": "Check Consecutive Absences" } ]] },
+      "Check Consecutive Absences": { "main": [[ { "node": "Route by Absence Count" } ]] },
+      "Route by Absence Count": {
+        "main": [
+          [{ "node": "Send WhatsApp Alert (1st absence)" }],
+          [{ "node": "Send Escalated Alert (3+ absences)" }]
+        ]
+      },
+      "Send WhatsApp Alert (1st absence)": { "main": [[ { "node": "Log to Supabase" } ]] },
+      "Send Escalated Alert (3+ absences)": { "main": [[ { "node": "Log to Supabase" } ]] }
+    }
+  },
+  {
+    "name": "Fee Reminder (Monthly Cron)",
+    "active": true,
+    "nodes": [
+      {
+        "name": "Schedule Trigger (5th of Month)",
+        "type": "n8n-nodes-base.scheduleTrigger",
+        "typeVersion": 1,
+        "position": [250, 300],
+        "parameters": {
+          "rule": {
+            "interval": "custom",
+            "cronExpression": "0 9 5 * *"
+          }
+        }
+      },
+      {
+        "name": "Query Pending Fees",
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2,
+        "position": [450, 300],
+        "parameters": {
+          "operation": "executeQuery",
+          "query": "SELECT s.full_name, s.parent_name, s.parent_phone, s.admission_no, f.amount, f.balance, f.due_date, f.fee_type FROM fees f JOIN students s ON s.id = f.student_id WHERE f.status IN ('pending', 'overdue') AND f.balance > 0"
+        }
+      },
+      {
+        "name": "Send Fee Reminder",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 3,
+        "position": [650, 300],
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.interakt.ai/v1/public/message/",
+          "authentication": "genericCredentialType",
+          "genericAuthType": "httpHeaderAuth",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              { "name": "Authorization", "value": "=Bearer {{ $credentials.interaktApiKey }}" },
+              { "name": "Content-Type", "value": "application/json" }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              { "name": "countryCode", "value": "+91" },
+              { "name": "phoneNumber", "value": "={{ $json.parent_phone }}" },
+              { "name": "type", "value": "Template" },
+              { "name": "template", "value": "fee_reminder" },
+              { "name": "data", "value": "={\"student_name\":\"{{ $json.full_name }}\",\"amount\":\"{{ $json.balance }}\",\"due_date\":\"{{ $json.due_date }}\"}" }
+            ]
+          }
+        }
+      }
+    ],
+    "connections": {
+      "Schedule Trigger (5th of Month)": { "main": [[ { "node": "Query Pending Fees" } ]] },
+      "Query Pending Fees": { "main": [[ { "node": "Send Fee Reminder" } ]] }
+    }
+  },
+  {
+    "name": "Weekly Perfect Attendance Badge",
+    "active": true,
+    "nodes": [
+      {
+        "name": "Schedule Trigger (Friday 3PM)",
+        "type": "n8n-nodes-base.scheduleTrigger",
+        "typeVersion": 1,
+        "position": [250, 300],
+        "parameters": {
+          "rule": {
+            "interval": "custom",
+            "cronExpression": "0 15 * * 5"
+          }
+        }
+      },
+      {
+        "name": "Get Perfect Attendance Students",
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2,
+        "position": [450, 300],
+        "parameters": {
+          "operation": "executeQuery",
+          "query": "SELECT student_id FROM attendance WHERE date > CURRENT_DATE - 7 AND status = 'present' GROUP BY student_id HAVING COUNT(*) >= 5"
+        }
+      },
+      {
+        "name": "Insert Badges",
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2,
+        "position": [650, 300],
+        "parameters": {
+          "operation": "insert",
+          "schema": "public",
+          "table": "badges",
+          "dataToInsert": "defineBelow",
+          "values": {
+            "values": [
+              { "column": "student_id", "value": "={{ $json.student_id }}" },
+              { "column": "badge_type", "value": "= 'perfect-week'" },
+              { "column": "awarded_date", "value": "={{ $now.toISOString().split('T')[0] }}" },
+              { "column": "reason", "value": "= 'Perfect attendance for the week'" }
+            ]
+          }
+        }
+      },
+      {
+        "name": "Notify Parents",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 3,
+        "position": [850, 300],
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.interakt.ai/v1/public/message/",
+          "authentication": "genericCredentialType",
+          "genericAuthType": "httpHeaderAuth",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              { "name": "Authorization", "value": "=Bearer {{ $credentials.interaktApiKey }}" },
+              { "name": "Content-Type", "value": "application/json" }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              { "name": "countryCode", "value": "+91" },
+              { "name": "phoneNumber", "value": "={{ $json.parent_phone }}" },
+              { "name": "type", "value": "Template" },
+              { "name": "template", "value": "badge_awarded" },
+              { "name": "data", "value": "={\"student_name\":\"{{ $json.full_name }}\",\"badge\":\"Perfect Week\"}" }
+            ]
+          }
+        }
+      }
+    ],
+    "connections": {
+      "Schedule Trigger (Friday 3PM)": { "main": [[ { "node": "Get Perfect Attendance Students" } ]] },
+      "Get Perfect Attendance Students": { "main": [[ { "node": "Insert Badges" } ]] },
+      "Insert Badges": { "main": [[ { "node": "Notify Parents" } ]] }
+    }
+  },
+  {
+    "name": "Event to Calendar Sync",
+    "active": true,
+    "nodes": [
+      {
+        "name": "Google Form Webhook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 1,
+        "position": [250, 300],
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "new-event",
+          "options": {}
+        }
+      },
+      {
+        "name": "Create Google Calendar Event",
+        "type": "n8n-nodes-base.googleCalendar",
+        "typeVersion": 2,
+        "position": [450, 300],
+        "parameters": {
+          "operation": "create",
+          "calendarId": "primary",
+          "summary": "={{ $json.title }}",
+          "description": "={{ $json.description }}",
+          "start": {
+            "date": "={{ $json.event_date }}",
+            "time": "={{ $json.event_time || '09:00' }}"
+          },
+          "end": {
+            "date": "={{ $json.event_date }}",
+            "time": "={{ $json.event_time ? $json.event_time.replace(/:(\\d{2})$/, ':00') : '10:00' }}"
+          },
+          "location": "={{ $json.venue || 'Don Bosco Public School, Hathaura' }}"
+        }
+      },
+      {
+        "name": "Store in Supabase Events",
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2,
+        "position": [650, 300],
+        "parameters": {
+          "operation": "insert",
+          "schema": "public",
+          "table": "events",
+          "dataToInsert": "defineBelow",
+          "values": {
+            "values": [
+              { "column": "title", "value": "={{ $json.title }}" },
+              { "column": "description", "value": "={{ $json.description }}" },
+              { "column": "event_date", "value": "={{ $json.event_date }}" },
+              { "column": "event_time", "value": "={{ $json.event_time }}" },
+              { "column": "venue", "value": "={{ $json.venue }}" },
+              { "column": "google_calendar_id", "value": "={{ $json.id }}" }
+            ]
+          }
+        }
+      }
+    ],
+    "connections": {
+      "Google Form Webhook": { "main": [[ { "node": "Create Google Calendar Event" } ]] },
+      "Create Google Calendar Event": { "main": [[ { "node": "Store in Supabase Events" } ]] }
+    }
+  }
+]

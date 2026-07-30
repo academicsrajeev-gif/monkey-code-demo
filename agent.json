@@ -1,0 +1,131 @@
+{
+  "description": "Don Bosco School FAQ Assistant - answers parent queries about fees, holidays, uniforms, timings, admissions",
+  "language": "en",
+  "agentInfo": {
+    "agentName": "Don Bosco School Assistant",
+    "project": "don-bosco-school-hathaura",
+    "timezone": "Asia/Kolkata",
+    "defaultLanguage": "en",
+    "description": "Answers frequent parent queries about fees, holidays, uniform, timings, admissions for Don Bosco Public School Hathaura"
+  },
+  "intents": [
+    {
+      "name": "Default Welcome Intent",
+      "responses": [
+        {
+          "messages": [
+            { "type": "simple_response", "textToSpeech": "Namaste! Welcome to Don Bosco Public School Hathaura. How can I help you today? You can ask about admissions, fees, school timings, uniform, holidays, or contact details." }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "School Timings",
+      "trainingPhrases": [
+        "school timings", "what time does school start", "when does school close", "school hours",
+        "timing", "class timings", "office hours", "what time should I drop my child"
+      ],
+      "responses": [
+        {
+          "messages": [
+            { "type": "simple_response", "textToSpeech": "School runs from 8:00 AM to 2:00 PM, Monday to Friday. The office is open from 8:00 AM to 4:00 PM. On Saturdays, the office is open from 9:00 AM to 1:00 PM." }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Fee Structure",
+      "trainingPhrases": [
+        "fee structure", "how much is tuition", "school fees", "fee payment", "what are the fees",
+        "monthly fee", "annual fee", "transport fee", "fee installment"
+      ],
+      "responses": [
+        {
+          "messages": [
+            { "type": "simple_response", "textToSpeech": "Annual fees range from ₹18,000 for Playgroup-UKG to ₹26,000 for Classes 4-6. Transport is optional at ₹4,000-5,000 per year. Fees are payable in two installments. For exact details, please visit our website's Admissions page or call 6201956001." }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Uniform Details",
+      "trainingPhrases": [
+        "school uniform", "what to wear", "uniform color", "dress code", "winter uniform",
+        "sports uniform", "uniform shop"
+      ],
+      "responses": [
+        {
+          "messages": [
+            { "type": "simple_response", "textToSpeech": "Our school uniform: Boys wear white shirt, navy blue pants, navy blue tie, and black shoes. Girls wear white kurta, navy blue salwar, navy blue dupatta, and black shoes. Winter uniform includes a navy blue sweater and blazer. Sports day uniform is a white T-shirt and navy blue shorts." }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Holidays & Vacations",
+      "trainingPhrases": [
+        "school holidays", "summer vacation", "winter break", "Diwali holiday", "holiday list",
+        "school closed", "vacation", "festival holidays", "annual holidays", "school calendar"
+      ],
+      "responses": [
+        {
+          "messages": [
+            { "type": "simple_response", "textToSpeech": "Summer vacation is from May to June. Diwali break is in October-November. Winter break is in late December. All major festivals are observed as holidays. Please check our School Calendar page for the complete list of holidays and events." }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Admissions",
+      "trainingPhrases": [
+        "admission", "how to apply", "enroll my child", "admission form", "new admission",
+        "registration", "admission process", "required documents", "age requirement"
+      ],
+      "responses": [
+        {
+          "messages": [
+            { "type": "simple_response", "textToSpeech": "Admissions for 2025-26 are open! Visit our school office to collect the form. You'll need: birth certificate, previous report card, 2 passport photos, and parent ID. Minimum age for Playgroup is 2.5 years. For more details, visit our Admissions page or call 6201956001." }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Contact & Location",
+      "trainingPhrases": [
+        "contact number", "school phone", "school address", "where is school", "email school",
+        "how to reach", "school location", "call school", "whatsapp number"
+      ],
+      "responses": [
+        {
+          "messages": [
+            { "type": "simple_response", "textToSpeech": "You can reach us at: Phone: +91 6201956001, Email: donbosco.hathaura@gmail.com. Address: Don Bosco Public School, Hathaura. Office hours: 8 AM to 4 PM, Monday to Friday." }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Parent Portal",
+      "trainingPhrases": [
+        "parent portal", "check attendance online", "see my child's attendance", "fee status online",
+        "online homework", "school app", "download homework", "check fee online"
+      ],
+      "responses": [
+        {
+          "messages": [
+            { "type": "simple_response", "textToSpeech": "You can check your child's attendance, fee status, and homework online through our Parent Portal. Visit our website, click 'Parent Portal', and log in with your child's admission number. You can also install our app from Chrome browser - tap menu and 'Add to Home Screen'." }
+          ]
+        }
+      ]
+    }
+  ],
+  "fulfillment": {
+    "enabled": true,
+    "webhook": {
+      "url": "https://your-n8n-instance.com/webhook/dialogflow",
+      "method": "POST",
+      "headers": {
+        "Content-Type": "application/json"
+      }
+    }
+  }
+}

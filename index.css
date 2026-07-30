@@ -1,0 +1,12 @@
+@import "tailwindcss";
+
+@theme {
+  --color-db-blue: #0066CC;
+  --color-db-gold: #FFD700;
+  --color-db-dark: #1a1a2e;
+  --color-db-light: #f0f4ff;
+}
+
+.sticker-shadow {
+  box-shadow: 0 4px 14px rgba(0, 102, 204, 0.15);
+}

@@ -1,16 +1,11 @@
 import { createClient } from '@supabase/supabase-js'
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || ''
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || ''
+// ✅ Hardcoded for Don Bosco Public School Hathaura
+const supabaseUrl = 'https://iqgrjvstclkkclwmmvmk.supabase.co'
+const supabaseAnonKey = 'sb_publishable_f9DogSrIwAxmd0ofZoiWxQ_0tmPyJaY'
 
-let supabase = null
-export const DEMO_MODE = !supabaseUrl || !supabaseAnonKey
-
-if (!DEMO_MODE) {
-  supabase = createClient(supabaseUrl, supabaseAnonKey)
-}
-
-export { supabase }
+export const supabase = createClient(supabaseUrl, supabaseAnonKey)
+export const DEMO_MODE = false
 
 export const demoData = {
   students: [

@@ -3,7 +3,7 @@ import { createClient } from '@supabase/supabase-js'
 // ✅ Hardcoded for Don Bosco Public School Hathaura
 const supabaseUrl = 'https://iqgrjvstclkkclwmmvmk.supabase.co'
 const supabaseAnonKey = 'sb_publishable_f9DogSrIwAxmd0ofZoiWxQ_0tmPyJaY'
-
+//start
 export const supabase = createClient(supabaseUrl, supabaseAnonKey)
 export const DEMO_MODE = false
 

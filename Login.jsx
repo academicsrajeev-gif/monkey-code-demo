@@ -1,12 +1,12 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { GraduationCap, LogIn, User, ShieldCheck, Loader } from 'lucide-react'
+import { GraduationCap, LogIn, User, ShieldCheck, Loader, AlertCircle } from 'lucide-react'
 import { supabase } from './lib/supabase'
 
 export default function Login() {
-  const [role, setRole] = useState('parent')
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+  const [role, setRole] = useState('admin')
+  const [email, setEmail] = useState('admin@donbosco.edu.in')
+  const [password, setPassword] = useState('admin123')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const navigate = useNavigate()
@@ -14,57 +14,38 @@ export default function Login() {
   const handleLogin = async (e) => {
     e.preventDefault()
     setError('')
-
-    if (!email.trim() || !password.trim()) {
-      setError('Please enter both email and password')
-      return
-    }
-
     setLoading(true)
 
-    try {
-      console.log('Attempting login with:', email)
+    console.log('🔄 Login attempt with:', { email, role })
 
+    try {
       const { data, error: authError } = await supabase.auth.signInWithPassword({
         email: email.trim(),
         password: password.trim(),
       })
 
-      console.log('Auth response:', { data, authError })
-
       if (authError) {
-        console.error('Auth error details:', authError)
-        const errorMsg = authError.message || 
-                         authError.error_description || 
-                         authError.msg || 
-                         `Login failed (Code: ${authError.status || 'unknown'})`
-        setError(errorMsg)
+        console.error('❌ Supabase Auth Error:', authError)
+        setError(authError.message || 'Invalid credentials')
         setLoading(false)
         return
       }
 
-      if (!data || !data.user) {
-        setError('Login failed: No user data returned')
-        setLoading(false)
-        return
-      }
+      console.log('✅ Login successful!', data.user)
 
-      console.log('Login successful, user:', data.user)
-
-      // Login successful - redirect based on role
+      // Redirect based on selected role
       if (role === 'teacher') navigate('/app/attendance')
       else if (role === 'parent') navigate('/app/my-child')
       else navigate('/app/dashboard')
 
     } catch (err) {
-      console.error('Login exception:', err)
-      setError('Login failed: ' + (err.message || 'Unknown error occurred'))
+      console.error('💥 Exception during login:', err)
+      setError('Connection error. Please check your internet and try again.')
       setLoading(false)
     }
   }
 
-  // Auto-fill credentials for demo
-  const fillDemoCredentials = (selectedRole) => {
+  const fillDemo = (selectedRole) => {
     setRole(selectedRole)
     setError('')
     if (selectedRole === 'admin') {
@@ -80,17 +61,17 @@ export default function Login() {
   }
 
   return (
-    <div className="min-h-[80vh] flex items-center justify-center p-4">
-      <div className="w-full max-w-md bg-white rounded-2xl sticker-shadow p-8">
-        <div className="text-center mb-6">
-          <div className="w-16 h-16 bg-db-blue rounded-full flex items-center justify-center mx-auto mb-3">
-            <GraduationCap size={32} className="text-db-gold" />
+    <div className="min-h-[80vh] flex items-center justify-center p-4 bg-gray-50">
+      <div className="w-full max-w-md bg-white rounded-3xl shadow-xl p-8">
+        <div className="text-center mb-8">
+          <div className="w-20 h-20 bg-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
+            <GraduationCap size={40} className="text-white" />
           </div>
-          <h1 className="text-xl font-bold text-db-dark">School Portal Login</h1>
-          <p className="text-sm text-gray-500 mt-1">Don Bosco Public School Hathaura</p>
+          <h1 className="text-2xl font-bold text-gray-900">School Portal Login</h1>
+          <p className="text-gray-500 mt-1">Don Bosco Public School Hathaura</p>
         </div>
 
-        <div className="flex gap-2 mb-6">
+        <div className="flex gap-3 mb-8 bg-gray-100 p-1 rounded-2xl">
           {[
             { value: 'parent', label: 'Parent', icon: User },
             { value: 'teacher', label: 'Teacher', icon: ShieldCheck },
@@ -98,82 +79,71 @@ export default function Login() {
           ].map(({ value, label, icon: Icon }) => (
             <button
               key={value}
-              type="button"
-              onClick={() => fillDemoCredentials(value)}
-              className={`flex-1 flex flex-col items-center gap-1 p-3 rounded-xl border-2 transition ${
-                role === value
-                  ? 'border-db-blue bg-blue-50 text-db-blue'
-                  : 'border-gray-200 text-gray-400 hover:border-gray-300'
+              onClick={() => fillDemo(value)}
+              className={`flex-1 py-3 px-4 rounded-xl font-medium flex items-center justify-center gap-2 transition-all ${
+                role === value 
+                  ? 'bg-white shadow text-blue-600' 
+                  : 'text-gray-500 hover:bg-white/50'
               }`}
             >
-              <Icon size={20} />
-              <span className="text-xs font-medium">{label}</span>
+              <Icon size={18} />
+              {label}
             </button>
           ))}
         </div>
 
-        <form onSubmit={handleLogin} className="space-y-4">
+        <form onSubmit={handleLogin} className="space-y-5">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Email Address
-            </label>
+            <label className="block text-sm font-medium text-gray-700 mb-1.5">Email Address</label>
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="your@email.com"
-              className="w-full px-4 py-2.5 border border-gray-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-db-blue"
-              autoComplete="email"
+              className="w-full px-4 py-3 border border-gray-300 rounded-2xl focus:outline-none focus:border-blue-500 text-sm"
+              placeholder="admin@donbosco.edu.in"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Password
-            </label>
+            <label className="block text-sm font-medium text-gray-700 mb-1.5">Password</label>
             <input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder="Enter your password"
-              className="w-full px-4 py-2.5 border border-gray-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-db-blue"
-              autoComplete="current-password"
+              className="w-full px-4 py-3 border border-gray-300 rounded-2xl focus:outline-none focus:border-blue-500 text-sm"
+              placeholder="Enter password"
             />
           </div>
 
           {error && (
-            <div className="p-3 bg-red-50 border border-red-200 rounded-xl text-sm text-red-700 flex items-start gap-2">
-              <span className="text-lg">⚠️</span>
-              <span className="flex-1">{error}</span>
+            <div className="flex items-center gap-2 bg-red-50 border border-red-200 text-red-700 p-3 rounded-2xl text-sm">
+              <AlertCircle size={20} />
+              {error}
             </div>
           )}
 
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-3 bg-db-blue text-white rounded-xl font-semibold hover:bg-blue-700 transition disabled:opacity-50 flex items-center justify-center gap-2"
+            className="w-full py-3.5 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white font-semibold rounded-2xl flex items-center justify-center gap-2 transition"
           >
             {loading ? (
               <>
-                <Loader className="animate-spin" size={20} /> Signing In...
+                <Loader className="animate-spin" size={20} />
+                Signing in...
               </>
             ) : (
               <>
-                <LogIn size={20} /> Sign In
+                <LogIn size={20} />
+                Sign In
               </>
             )}
           </button>
         </form>
 
-        <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-xl text-xs text-blue-800">
-          <strong>💡 Quick Login:</strong> Click Parent/Teacher/Admin button above to auto-fill demo credentials, then click Sign In.
-        </div>
-
-        <div className="mt-3 text-center">
-          <p className="text-xs text-gray-500">
-            Test Credentials:<br />
-            <span className="font-mono">admin@donbosco.edu.in / admin123</span>
-          </p>
+        <div className="mt-6 text-center text-xs text-gray-500">
+          Test Credentials: <br />
+          <span className="font-mono text-blue-600">admin@donbosco.edu.in / admin123</span>
         </div>
       </div>
     </div>

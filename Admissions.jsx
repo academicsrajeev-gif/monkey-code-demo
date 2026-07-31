@@ -20,14 +20,14 @@ export default function Admissions() {
       <section className="bg-gradient-to-br from-db-blue to-blue-800 text-white py-16">
         <div className="max-w-7xl mx-auto px-4 text-center">
           <h1 className="text-4xl font-bold mb-4">Admissions</h1>
-          <p className="text-blue-100 max-w-2xl mx-auto">Admissions open for the academic year 2025-26. Apply today!</p>
+          <p className="text-blue-100 max-w-2xl mx-auto">Admissions open for the academic year 2026-27. Apply today!</p>
         </div>
       </section>
 
       <section className="py-16">
         <div className="max-w-7xl mx-auto px-4">
           <div className="bg-db-gold/10 border border-db-gold/30 rounded-2xl p-6 mb-12 text-center">
-            <h2 className="text-xl font-bold text-db-dark mb-2">Admissions Open 2025-26</h2>
+            <h2 className="text-xl font-bold text-db-dark mb-2">Admissions Open 2026-27</h2>
             <p className="text-gray-700">Limited seats available. Contact us at <strong>6201956001</strong> or visit the school for a campus tour.</p>
           </div>
 
@@ -48,7 +48,7 @@ export default function Admissions() {
             ))}
           </div>
 
-          <h2 className="text-2xl font-bold text-db-dark mb-4">Fee Structure (2025-26)</h2>
+          <h2 className="text-2xl font-bold text-db-dark mb-4">Fee Structure (2026-27)</h2>
           <p className="text-sm text-gray-500 mb-6">Fees are payable in two installments. Transport fees are optional.</p>
           <div className="overflow-x-auto">
             <table className="w-full bg-white rounded-2xl overflow-hidden sticker-shadow">

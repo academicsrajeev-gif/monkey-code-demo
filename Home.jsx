@@ -25,7 +25,7 @@ export default function Home() {
         </div>
         <div className="relative max-w-7xl mx-auto px-4 py-20 md:py-32">
           <div className="max-w-3xl">
-            <div className="inline-block bg-db-gold text-db-dark px-4 py-1 rounded-full text-sm font-semibold mb-4">Admissions Open for 2025-26</div>
+            <div className="inline-block bg-db-gold text-db-dark px-4 py-1 rounded-full text-sm font-semibold mb-4">Admissions Open for 2026-27</div>
             <h1 className="text-4xl md:text-6xl font-bold leading-tight mb-4">
               Don Bosco Public School
               <span className="block text-db-gold mt-2">Hathaura</span>

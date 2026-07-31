@@ -23,16 +23,33 @@ export default function Login() {
     setLoading(true)
 
     try {
+      console.log('Attempting login with:', email)
+
       const { data, error: authError } = await supabase.auth.signInWithPassword({
         email: email.trim(),
         password: password.trim(),
       })
 
+      console.log('Auth response:', { data, authError })
+
       if (authError) {
-        setError(authError.message)
+        console.error('Auth error details:', authError)
+        const errorMsg = authError.message || 
+                         authError.error_description || 
+                         authError.msg || 
+                         `Login failed (Code: ${authError.status || 'unknown'})`
+        setError(errorMsg)
         setLoading(false)
         return
       }
+
+      if (!data || !data.user) {
+        setError('Login failed: No user data returned')
+        setLoading(false)
+        return
+      }
+
+      console.log('Login successful, user:', data.user)
 
       // Login successful - redirect based on role
       if (role === 'teacher') navigate('/app/attendance')
@@ -40,7 +57,8 @@ export default function Login() {
       else navigate('/app/dashboard')
 
     } catch (err) {
-      setError('Login failed: ' + err.message)
+      console.error('Login exception:', err)
+      setError('Login failed: ' + (err.message || 'Unknown error occurred'))
       setLoading(false)
     }
   }
@@ -48,6 +66,7 @@ export default function Login() {
   // Auto-fill credentials for demo
   const fillDemoCredentials = (selectedRole) => {
     setRole(selectedRole)
+    setError('')
     if (selectedRole === 'admin') {
       setEmail('admin@donbosco.edu.in')
       setPassword('admin123')
@@ -96,14 +115,15 @@ export default function Login() {
         <form onSubmit={handleLogin} className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              Email
+              Email Address
             </label>
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="your@email.com"
-              className="w-full px-4 py-2.5 border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-db-blue"
+              className="w-full px-4 py-2.5 border border-gray-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-db-blue"
+              autoComplete="email"
             />
           </div>
 
@@ -115,14 +135,16 @@ export default function Login() {
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder="Enter password"
-              className="w-full px-4 py-2.5 border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-db-blue"
+              placeholder="Enter your password"
+              className="w-full px-4 py-2.5 border border-gray-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-db-blue"
+              autoComplete="current-password"
             />
           </div>
 
           {error && (
-            <div className="p-3 bg-red-50 border border-red-200 rounded-xl text-sm text-red-700">
-              ❌ {error}
+            <div className="p-3 bg-red-50 border border-red-200 rounded-xl text-sm text-red-700 flex items-start gap-2">
+              <span className="text-lg">⚠️</span>
+              <span className="flex-1">{error}</span>
             </div>
           )}
 
@@ -136,13 +158,22 @@ export default function Login() {
                 <Loader className="animate-spin" size={20} /> Signing In...
               </>
             ) : (
-              'Sign In'
+              <>
+                <LogIn size={20} /> Sign In
+              </>
             )}
           </button>
         </form>
 
         <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-xl text-xs text-blue-800">
-          <strong>Quick Login:</strong> Click Parent/Teacher/Admin above to auto-fill demo credentials, then click Sign In.
+          <strong>💡 Quick Login:</strong> Click Parent/Teacher/Admin button above to auto-fill demo credentials, then click Sign In.
+        </div>
+
+        <div className="mt-3 text-center">
+          <p className="text-xs text-gray-500">
+            Test Credentials:<br />
+            <span className="font-mono">admin@donbosco.edu.in / admin123</span>
+          </p>
         </div>
       </div>
     </div>

@@ -1,7 +1,15 @@
 import { Link } from 'react-router-dom'
-import { Phone, Mail, MapPin, Globe, Video } from 'lucide-react'
+import { Phone, Mail, MapPin, Globe } from 'lucide-react'
 
 const LOGO_URL = 'https://i.postimg.cc/xCCf0gxP/prod-temp-4ee49e0f-a3df-41ec-b9d4-b2f28e8e23bb-9ea92f409a1706133ed49b9433f1ab25.webp'
+
+const InstagramIcon = ({ className = '' }) => (
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
+    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+    <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
+  </svg>
+)
 
 export default function Footer() {
   return (
@@ -36,8 +44,8 @@ export default function Footer() {
               <div className="flex items-center gap-2"><Mail size={14} /> donbosco.hathaura@gmail.com</div>
             </div>
             <div className="flex gap-3 mt-4">
-              <a href="#" className="p-2 bg-gray-700 rounded-full hover:bg-db-blue transition"><Globe size={16} /></a>
-              <a href="#" className="p-2 bg-gray-700 rounded-full hover:bg-db-blue transition"><Video size={16} /></a>
+              <a href="https://www.instagram.com/donbosco.hathaura/" target="_blank" rel="noopener noreferrer" className="p-2 bg-gray-700 rounded-full hover:bg-db-blue transition" title="Instagram"><InstagramIcon /></a>
+              <a href="/" className="p-2 bg-gray-700 rounded-full hover:bg-db-blue transition" title="Website"><Globe size={16} /></a>
             </div>
           </div>
         </div>

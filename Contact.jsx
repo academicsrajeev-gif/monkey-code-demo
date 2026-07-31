@@ -1,4 +1,12 @@
 import { Phone, Mail, MapPin, Clock, Send } from 'lucide-react'
+
+const InstagramIcon = ({ className = '' }) => (
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
+    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+    <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
+  </svg>
+)
 import { useState } from 'react'
 import { supabase, DEMO_MODE } from '../../lib/supabase'
 
@@ -87,6 +95,13 @@ export default function Contact() {
                   <div className="text-sm text-gray-500">School Hours</div>
                   <div className="font-semibold text-db-dark">Mon-Fri: 8:00 AM - 2:00 PM</div>
                   <div className="text-xs text-gray-500">Office: 8:00 AM - 4:00 PM</div>
+                </div>
+              </div>
+              <div className="bg-white p-6 rounded-2xl sticker-shadow flex items-center gap-4">
+                <div className="w-12 h-12 bg-pink-100 rounded-xl flex items-center justify-center"><InstagramIcon className="text-pink-600" /></div>
+                <div>
+                  <div className="text-sm text-gray-500">Instagram</div>
+                  <a href="https://www.instagram.com/donbosco.hathaura/" target="_blank" rel="noopener noreferrer" className="font-semibold text-db-dark hover:text-blue-600">@donbosco.hathaura</a>
                 </div>
               </div>
             </div>

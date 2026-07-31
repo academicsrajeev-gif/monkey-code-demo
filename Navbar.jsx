@@ -1,261 +1,120 @@
 import { useState, useEffect } from 'react'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { Menu, X, User, LayoutDashboard, LogOut } from 'lucide-react'
 import { supabase } from './lib/supabase'
-import { Upload, Trash2, Image as ImageIcon, Loader, Plus, X, Lock } from 'lucide-react'
-import { Link } from 'react-router-dom'
 
-export default function Gallery() {
-  const [photos, setPhotos] = useState([])
+const LOGO_URL = 'https://i.postimg.cc/xCCf0gxP/prod-temp-4ee49e0f-a3df-41ec-b9d4-b2f28e8e23bb-9ea92f409a1706133ed49b9433f1ab25.webp'
+
+const navLinks = [
+  { path: '/', label: 'Home' },
+  { path: '/about', label: 'About Us' },
+  { path: '/admissions', label: 'Admissions' },
+  { path: '/gallery', label: 'Gallery' },
+  { path: '/events', label: 'Events' },
+  { path: '/contact', label: 'Contact' },
+  { path: '/parent-portal', label: 'Parent Portal' },
+]
+
+export default function Navbar() {
+  const [open, setOpen] = useState(false)
   const [user, setUser] = useState(null)
-  const [isAdmin, setIsAdmin] = useState(false)
-  const [showUpload, setShowUpload] = useState(false)
-  const [uploading, setUploading] = useState(false)
-  const [title, setTitle] = useState('')
-  const [category, setCategory] = useState('Events')
-  const [file, setFile] = useState(null)
-  const [message, setMessage] = useState('')
-  const [activeFilter, setActiveFilter] = useState('All')
-
-  const categories = ['Events', 'Sports', 'Campus', 'Activities']
-  const filters = ['All', ...categories]
+  const location = useLocation()
+  const navigate = useNavigate()
+  const isApp = location.pathname.startsWith('/app')
 
   useEffect(() => {
-    loadPhotos()
-    checkUser()
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user ?? null)
+    })
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null)
+    })
+    return () => subscription.unsubscribe()
   }, [])
 
-  async function checkUser() {
-    const { data: { user } } = await supabase.auth.getUser()
-    setUser(user)
-    if (!user) return
-    const { data } = await supabase
-      .from('user_profiles')
-      .select('role')
-      .eq('id', user.id)
-      .maybeSingle()
-    setIsAdmin(data?.role === 'admin' || data?.role === 'principal')
+  const handleSignOut = async () => {
+    await supabase.auth.signOut()
+    setUser(null)
+    setOpen(false)
+    navigate('/')
   }
-
-  async function loadPhotos() {
-    const { data, error } = await supabase
-      .from('gallery')
-      .select('*')
-      .order('created_at', { ascending: false })
-    if (error) {
-      console.error('Error loading photos:', error.message)
-    }
-    if (data) setPhotos(data)
-  }
-
-  async function handleUpload(e) {
-    e.preventDefault()
-    if (!file || !title) {
-      setMessage('Please select a file and enter a title')
-      return
-    }
-    setUploading(true)
-    setMessage('')
-    try {
-      const fileExt = file.name.split('.').pop()
-      const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`
-      const filePath = `${category.toLowerCase()}/${fileName}`
-
-      const { error: uploadError } = await supabase.storage
-        .from('Gallery')
-        .upload(filePath, file)
-      if (uploadError) throw uploadError
-
-      const { data: { publicUrl } } = supabase.storage
-        .from('Gallery')
-        .getPublicUrl(filePath)
-
-      const { error: dbError } = await supabase
-        .from('gallery')
-        .insert([{
-          title,
-          category,
-          image_url: publicUrl,
-          file_path: filePath,
-          uploaded_by: user?.id
-        }])
-      if (dbError) throw dbError
-
-      setMessage('Photo uploaded successfully!')
-      setTitle('')
-      setFile(null)
-      document.getElementById('file-input').value = ''
-      loadPhotos()
-    } catch (error) {
-      setMessage('Error: ' + error.message)
-    } finally {
-      setUploading(false)
-    }
-  }
-
-  async function handleDelete(photo) {
-    if (!confirm('Delete this photo?')) return
-    try {
-      if (photo.file_path) {
-        await supabase.storage.from('Gallery').remove([photo.file_path])
-      }
-      await supabase.from('gallery').delete().eq('id', photo.id)
-      loadPhotos()
-    } catch (error) {
-      alert('Error deleting: ' + error.message)
-    }
-  }
-
-  const filteredPhotos = activeFilter === 'All'
-    ? photos
-    : photos.filter(p => p.category === activeFilter)
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <section className="bg-gradient-to-br from-db-blue to-blue-800 text-white py-12">
-        <div className="max-w-6xl mx-auto px-6 text-center">
-          <h1 className="text-4xl font-bold mb-2">Photo Gallery</h1>
-          <p className="text-blue-100">Moments captured at Don Bosco Public School Hathaura</p>
+    <nav className="bg-db-blue text-white sticker-shadow sticky top-0 z-50">
+      <div className="max-w-7xl mx-auto px-4">
+        <div className="flex items-center justify-between h-16">
+          <Link to="/" className="flex items-center gap-2">
+            <img src={LOGO_URL} alt="Don Bosco School" className="w-9 h-9 rounded object-contain" />
+            <div>
+              <div className="font-bold text-sm leading-tight">Don Bosco Public School</div>
+              <div className="text-xs text-blue-200">Hathaura</div>
+            </div>
+          </Link>
+
+          <div className="hidden md:flex items-center gap-1">
+            {isApp ? (
+              <Link to="/" className="px-3 py-2 rounded-lg text-sm hover:bg-blue-700 transition flex items-center gap-1">
+                <LayoutDashboard size={16} /> App Dashboard
+              </Link>
+            ) : (
+              navLinks.map(link => (
+                <Link
+                  key={link.path}
+                  to={link.path}
+                  className={`px-3 py-2 rounded-lg text-sm transition ${
+                    location.pathname === link.path ? 'bg-blue-700 text-db-gold' : 'hover:bg-blue-700'
+                  }`}
+                >
+                  {link.label}
+                </Link>
+              ))
+            )}
+            {user ? (
+              <button
+                onClick={handleSignOut}
+                className="ml-2 px-4 py-2 rounded-lg bg-red-500 text-white font-semibold text-sm hover:bg-red-600 transition flex items-center gap-1"
+              >
+                <LogOut size={16} /> Sign Out
+              </button>
+            ) : (
+              <Link to="/login" className="ml-2 px-4 py-2 rounded-lg bg-db-gold text-db-dark font-semibold text-sm hover:bg-yellow-400 transition flex items-center gap-1">
+                <User size={16} /> Login
+              </Link>
+            )}
+          </div>
+
+          <button onClick={() => setOpen(!open)} className="md:hidden p-2">
+            {open ? <X size={24} /> : <Menu size={24} />}
+          </button>
         </div>
-      </section>
+      </div>
 
-      <div className="max-w-6xl mx-auto px-6 py-8">
-        <div className="flex gap-2 mb-6 overflow-x-auto pb-2">
-          {filters.map(f => (
-            <button
-              key={f}
-              onClick={() => setActiveFilter(f)}
-              className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition ${
-                activeFilter === f
-                  ? 'bg-blue-600 text-white'
-                  : 'bg-white text-gray-600 hover:bg-gray-200 shadow'
-              }`}
+      {open && (
+        <div className="md:hidden bg-blue-800 px-4 pb-4 space-y-1">
+          {navLinks.map(link => (
+            <Link
+              key={link.path}
+              to={link.path}
+              onClick={() => setOpen(false)}
+              className="block px-3 py-2 rounded-lg text-sm hover:bg-blue-700"
             >
-              {f}
-            </button>
+              {link.label}
+            </Link>
           ))}
-
-          {isAdmin && (
+          {user ? (
             <button
-              onClick={() => setShowUpload(!showUpload)}
-              className="ml-auto px-4 py-2 rounded-full text-sm font-semibold whitespace-nowrap transition bg-green-600 text-white hover:bg-green-700 shadow flex items-center gap-1"
+              onClick={handleSignOut}
+              className="block w-full px-3 py-2 rounded-lg bg-red-500 text-white font-semibold text-sm text-center"
             >
-              {showUpload ? <X size={16} /> : <Plus size={16} />}
-              {showUpload ? 'Close' : 'Upload Photo'}
+              Sign Out
             </button>
+          ) : (
+            <Link to="/login" onClick={() => setOpen(false)} className="block px-3 py-2 rounded-lg bg-db-gold text-db-dark font-semibold text-sm text-center">
+              Login / App
+            </Link>
           )}
         </div>
-
-        {isAdmin && showUpload && (
-          <div className="bg-white rounded-2xl shadow-lg p-6 mb-8 border-2 border-green-200">
-            <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
-              <Upload size={24} /> Upload New Photo
-            </h2>
-            <form onSubmit={handleUpload} className="space-y-4">
-              <div className="grid md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium mb-2">Photo Title</label>
-                  <input
-                    type="text"
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
-                    placeholder="e.g. Annual Day 2025"
-                    className="w-full p-3 border border-gray-300 rounded-lg focus:border-blue-500 outline-none"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium mb-2">Category</label>
-                  <select
-                    value={category}
-                    onChange={(e) => setCategory(e.target.value)}
-                    className="w-full p-3 border border-gray-300 rounded-lg focus:border-blue-500 outline-none bg-white"
-                  >
-                    {categories.map(cat => (
-                      <option key={cat} value={cat}>{cat}</option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium mb-2">Choose Photo</label>
-                <input
-                  id="file-input"
-                  type="file"
-                  accept="image/*"
-                  onChange={(e) => setFile(e.target.files[0])}
-                  className="w-full p-3 border border-gray-300 rounded-lg"
-                />
-                <p className="text-xs text-gray-500 mt-1">Max 5MB. JPG, PNG supported.</p>
-              </div>
-
-              <button
-                type="submit"
-                disabled={uploading}
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-lg flex items-center justify-center gap-2 disabled:opacity-50"
-              >
-                {uploading ? (
-                  <>
-                    <Loader className="animate-spin" size={20} /> Uploading...
-                  </>
-                ) : (
-                  <>
-                    <Upload size={20} /> Upload Photo
-                  </>
-                )}
-              </button>
-
-              {message && (
-                <p className={`text-center p-3 rounded-lg ${
-                  message.startsWith('Error')
-                    ? 'bg-red-100 text-red-700'
-                    : 'bg-green-100 text-green-700'
-                }`}>
-                  {message}
-                </p>
-              )}
-            </form>
-          </div>
-        )}
-
-        {filteredPhotos.length === 0 ? (
-          <div className="text-center py-16">
-            <ImageIcon size={48} className="mx-auto text-gray-400 mb-3" />
-            <p className="text-gray-500">No photos yet. Check back soon!</p>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {filteredPhotos.map(photo => (
-              <div key={photo.id} className="bg-white rounded-xl shadow overflow-hidden group relative">
-                <img
-                  src={photo.image_url}
-                  alt={photo.title}
-                  className="w-full h-48 object-cover"
-                />
-                <div className="p-3">
-                  <p className="font-semibold">{photo.title}</p>
-                  <p className="text-xs text-gray-500">{photo.category}</p>
-                </div>
-                {isAdmin && (
-                  <button
-                    onClick={() => handleDelete(photo)}
-                    className="absolute top-2 right-2 bg-red-500 text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition"
-                    title="Delete photo"
-                  >
-                    <Trash2 size={16} />
-                  </button>
-                )}
-              </div>
-            ))}
-          </div>
-        )}
-
-        {!user && (
-          <div className="mt-8 text-center text-sm text-gray-500">
-            <Lock size={14} className="inline mr-1" />
-            Photo upload is available to admins only.{' '}
-            <Link to="/login" className="text-blue-600 hover:underline">Login</Link>
-          </div>
-        )}
-      </div>
-    </div>
+      )}
+    </nav>
   )
 }

@@ -110,9 +110,12 @@ export default function Gallery() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <section className="bg-gradient-to-br from-db-blue to-blue-800 text-white py-12">
-        <div className="max-w-6xl mx-auto px-6 text-center">
-          <h1 className="text-4xl font-bold mb-2">Photo Gallery</h1>
+      <section className="relative bg-gradient-to-br from-db-navy via-db-blue to-db-navy text-white py-12 overflow-hidden">
+        <div className="absolute inset-0 opacity-20 pointer-events-none">
+          <div className="absolute -top-16 right-10 w-72 h-72 bg-db-gold rounded-full blur-3xl" />
+        </div>
+        <div className="relative max-w-6xl mx-auto px-6 text-center">
+          <h1 className="text-4xl font-bold mb-2 font-display">Photo Gallery</h1>
           <p className="text-blue-100">Moments captured at Don Bosco Public School Hathaura</p>
         </div>
       </section>
@@ -123,9 +126,9 @@ export default function Gallery() {
             <button
               key={f}
               onClick={() => setActiveFilter(f)}
-              className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition ${
+              className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all btn-press ${
                 activeFilter === f
-                  ? 'bg-blue-600 text-white'
+                  ? 'bg-db-blue text-white shadow-md'
                   : 'bg-white text-gray-600 hover:bg-gray-200 shadow'
               }`}
             >
@@ -136,7 +139,7 @@ export default function Gallery() {
           {isAdmin && (
             <button
               onClick={() => setShowUpload(!showUpload)}
-              className="ml-auto px-4 py-2 rounded-full text-sm font-semibold whitespace-nowrap transition bg-green-600 text-white hover:bg-green-700 shadow flex items-center gap-1"
+              className="ml-auto px-4 py-2 rounded-full text-sm font-semibold whitespace-nowrap transition bg-emerald-600 text-white hover:bg-emerald-700 shadow flex items-center gap-1 btn-press"
             >
               {showUpload ? <X size={16} /> : <Plus size={16} />}
               {showUpload ? 'Close' : 'Upload Photo'}
@@ -190,7 +193,7 @@ export default function Gallery() {
               <button
                 type="submit"
                 disabled={uploading}
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-lg flex items-center justify-center gap-2 disabled:opacity-50"
+                className="w-full bg-db-blue hover:bg-blue-800 text-white font-bold py-3 rounded-lg flex items-center justify-center gap-2 disabled:opacity-50 btn-press"
               >
                 {uploading ? (
                   <>
@@ -224,14 +227,20 @@ export default function Gallery() {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {filteredPhotos.map(photo => (
-              <div key={photo.id} className="bg-white rounded-xl shadow overflow-hidden group relative">
-                <img
-                  src={photo.image_url}
-                  alt={photo.title}
-                  className="w-full h-48 object-cover"
-                />
+              <div key={photo.id} className="card-lift overflow-hidden group relative">
+                <div className="aspect-[4/3] overflow-hidden bg-slate-100">
+                  <img
+                    src={photo.image_url}
+                    alt={photo.title}
+                    loading="lazy"
+                    decoding="async"
+                    width={800}
+                    height={600}
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                </div>
                 <div className="p-3">
-                  <p className="font-semibold">{photo.title}</p>
+                  <p className="font-semibold text-db-navy">{photo.title}</p>
                   <p className="text-xs text-gray-500">{photo.category}</p>
                 </div>
                 {isAdmin && (

@@ -5,6 +5,9 @@ import path from 'path'
 
 export default defineConfig({
   plugins: [react(), tailwindcss()],
+  server: {
+    allowedHosts: ['.monkeycode-ai.live']
+  },
   resolve: {
     alias: [
       // Redirect all broken import paths to actual files in root
@@ -22,5 +25,19 @@ export default defineConfig({
   },
   build: {
     outDir: 'dist',
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (id.includes('node_modules')) {
+            if (id.includes('@supabase')) return 'supabase'
+            if (id.includes('recharts')) return 'charts'
+            if (id.includes('react-router')) return 'router'
+            if (id.includes('react') || id.includes('scheduler')) return 'react'
+            if (id.includes('qrcode')) return 'qrcode'
+            return 'vendor'
+          }
+        },
+      },
+    },
   }
 })

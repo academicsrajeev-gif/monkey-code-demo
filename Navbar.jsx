@@ -17,10 +17,18 @@ const navLinks = [
 
 export default function Navbar() {
   const [open, setOpen] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
   const [user, setUser] = useState(null)
   const location = useLocation()
   const navigate = useNavigate()
   const isApp = location.pathname.startsWith('/app')
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 8)
+    onScroll()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -32,6 +40,10 @@ export default function Navbar() {
     return () => subscription.unsubscribe()
   }, [])
 
+  useEffect(() => {
+    setOpen(false)
+  }, [location.pathname])
+
   const handleSignOut = async () => {
     await supabase.auth.signOut()
     setUser(null)
@@ -40,20 +52,20 @@ export default function Navbar() {
   }
 
   return (
-    <nav className="bg-db-blue text-white sticker-shadow sticky top-0 z-50">
+    <nav className={`sticky top-0 z-50 text-white transition-all duration-300 ${scrolled || open ? 'glass shadow-lg' : 'bg-db-navy'}`}>
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex items-center justify-between h-16">
-          <Link to="/" className="flex items-center gap-2">
-            <img src={LOGO_URL} alt="Don Bosco School" className="w-9 h-9 rounded object-contain" />
+          <Link to="/" className="flex items-center gap-2 group">
+            <img src={LOGO_URL} alt="Don Bosco School" className="w-9 h-9 rounded object-contain transition-transform duration-200 group-hover:scale-105" />
             <div>
-              <div className="font-bold text-sm leading-tight">Don Bosco Public School</div>
+              <div className="font-bold text-sm leading-tight font-display">Don Bosco Public School</div>
               <div className="text-xs text-blue-200">Hathaura</div>
             </div>
           </Link>
 
           <div className="hidden md:flex items-center gap-1">
             {isApp ? (
-              <Link to="/" className="px-3 py-2 rounded-lg text-sm hover:bg-blue-700 transition flex items-center gap-1">
+              <Link to="/" className="px-3 py-2 rounded-lg text-sm hover:bg-white/10 transition flex items-center gap-1">
                 <LayoutDashboard size={16} /> App Dashboard
               </Link>
             ) : (
@@ -61,8 +73,8 @@ export default function Navbar() {
                 <Link
                   key={link.path}
                   to={link.path}
-                  className={`px-3 py-2 rounded-lg text-sm transition ${
-                    location.pathname === link.path ? 'bg-blue-700 text-db-gold' : 'hover:bg-blue-700'
+                  className={`px-3 py-2 rounded-lg text-sm transition-colors ${
+                    location.pathname === link.path ? 'bg-white/10 text-db-gold' : 'hover:bg-white/10'
                   }`}
                 >
                   {link.label}
@@ -72,31 +84,33 @@ export default function Navbar() {
             {user ? (
               <button
                 onClick={handleSignOut}
-                className="ml-2 px-4 py-2 rounded-lg bg-red-500 text-white font-semibold text-sm hover:bg-red-600 transition flex items-center gap-1"
+                className="ml-2 px-4 py-2 rounded-lg bg-db-crimson text-white font-semibold text-sm hover:bg-red-700 transition-all btn-press focus-ring"
               >
-                <LogOut size={16} /> Sign Out
+                <span className="flex items-center gap-1"><LogOut size={16} /> Sign Out</span>
               </button>
             ) : (
-              <Link to="/login" className="ml-2 px-4 py-2 rounded-lg bg-db-gold text-db-dark font-semibold text-sm hover:bg-yellow-400 transition flex items-center gap-1">
+              <Link to="/login" className="ml-2 px-4 py-2 rounded-lg bg-db-gold text-db-navy font-semibold text-sm hover:bg-amber-400 transition-all btn-press focus-ring flex items-center gap-1">
                 <User size={16} /> Login
               </Link>
             )}
           </div>
 
-          <button onClick={() => setOpen(!open)} className="md:hidden p-2">
+          <button onClick={() => setOpen(!open)} className="md:hidden p-2 rounded-lg hover:bg-white/10 transition" aria-label="Toggle menu">
             {open ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
       </div>
 
       {open && (
-        <div className="md:hidden bg-blue-800 px-4 pb-4 space-y-1">
+        <div className="md:hidden bg-db-navy/95 backdrop-blur-xl border-t border-white/10 px-4 pb-4 space-y-1">
           {navLinks.map(link => (
             <Link
               key={link.path}
               to={link.path}
               onClick={() => setOpen(false)}
-              className="block px-3 py-2 rounded-lg text-sm hover:bg-blue-700"
+              className={`block px-3 py-2 rounded-lg text-sm transition-colors ${
+                location.pathname === link.path ? 'bg-white/10 text-db-gold' : 'hover:bg-white/10'
+              }`}
             >
               {link.label}
             </Link>
@@ -104,12 +118,12 @@ export default function Navbar() {
           {user ? (
             <button
               onClick={handleSignOut}
-              className="block w-full px-3 py-2 rounded-lg bg-red-500 text-white font-semibold text-sm text-center"
+              className="block w-full px-3 py-2 rounded-lg bg-db-crimson text-white font-semibold text-sm text-center"
             >
               Sign Out
             </button>
           ) : (
-            <Link to="/login" onClick={() => setOpen(false)} className="block px-3 py-2 rounded-lg bg-db-gold text-db-dark font-semibold text-sm text-center">
+            <Link to="/login" onClick={() => setOpen(false)} className="block px-3 py-2 rounded-lg bg-db-gold text-db-navy font-semibold text-sm text-center">
               Login / App
             </Link>
           )}

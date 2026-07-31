@@ -1,12 +1,69 @@
 @import "tailwindcss";
 
 @theme {
-  --color-db-blue: #0066CC;
-  --color-db-gold: #FFD700;
-  --color-db-dark: #1a1a2e;
-  --color-db-light: #f0f4ff;
+  --color-db-blue: #1E3A8A;
+  --color-db-navy: #0F172A;
+  --color-db-gold: #F59E0B;
+  --color-db-amber: #F59E0B;
+  --color-db-crimson: #DC2626;
+  --color-db-dark: #0F172A;
+  --color-db-light: #F8FAFC;
+
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  --font-display: "Plus Jakarta Sans", "Inter", ui-sans-serif, system-ui, sans-serif;
+
+  --shadow-card: 0 1px 2px rgba(15, 23, 42, 0.06), 0 4px 16px rgba(15, 23, 42, 0.08);
+  --shadow-card-hover: 0 4px 8px rgba(15, 23, 42, 0.08), 0 16px 40px rgba(15, 23, 42, 0.14);
 }
 
-.sticker-shadow {
-  box-shadow: 0 4px 14px rgba(0, 102, 204, 0.15);
+@utility sticker-shadow {
+  box-shadow: var(--shadow-card);
+}
+
+@layer base {
+  body {
+    @apply bg-db-light text-slate-800 antialiased;
+  }
+  h1, h2, h3, h4 {
+    @apply font-display;
+  }
+}
+
+@layer components {
+  .glass {
+    background: rgba(15, 23, 42, 0.82);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.10);
+  }
+
+  .card-lift {
+    @apply bg-white rounded-2xl sticker-shadow transition-all duration-300;
+  }
+  .card-lift:hover {
+    box-shadow: var(--shadow-card-hover);
+    transform: translateY(-4px);
+  }
+
+  .btn-press {
+    @apply transition-all duration-150;
+  }
+  .btn-press:active {
+    transform: scale(0.96);
+  }
+
+  .link-underline {
+    @apply relative transition-colors;
+  }
+  .link-underline::after {
+    content: '';
+    @apply absolute left-0 -bottom-0.5 h-0.5 w-0 bg-current rounded-full transition-all duration-300;
+  }
+  .link-underline:hover::after {
+    @apply w-full;
+  }
+
+  .focus-ring {
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-db-gold focus-visible:ring-offset-2;
+  }
 }

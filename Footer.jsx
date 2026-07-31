@@ -29,11 +29,11 @@ export default function Footer() {
           <div>
             <h3 className="font-semibold text-db-gold mb-3">Quick Links</h3>
             <div className="space-y-2 text-sm text-gray-400">
-              <Link to="/" className="block hover:text-white">Home</Link>
-              <Link to="/about" className="block hover:text-white">About Us</Link>
-              <Link to="/admissions" className="block hover:text-white">Admissions</Link>
-              <Link to="/parent-portal" className="block hover:text-white">Parent Portal</Link>
-              <Link to="/login" className="block hover:text-white">Teacher Login</Link>
+              <Link to="/" className="block link-underline hover:text-db-gold">Home</Link>
+              <Link to="/about" className="block link-underline hover:text-db-gold">About Us</Link>
+              <Link to="/admissions" className="block link-underline hover:text-db-gold">Admissions</Link>
+              <Link to="/parent-portal" className="block link-underline hover:text-db-gold">Parent Portal</Link>
+              <Link to="/login" className="block link-underline hover:text-db-gold">Teacher Login</Link>
             </div>
           </div>
           <div>
@@ -44,8 +44,8 @@ export default function Footer() {
               <div className="flex items-center gap-2"><Mail size={14} /> donbosco.hathaura@gmail.com</div>
             </div>
             <div className="flex gap-3 mt-4">
-              <a href="https://www.instagram.com/donbosco.hathaura/" target="_blank" rel="noopener noreferrer" className="p-2 bg-gray-700 rounded-full hover:bg-db-blue transition" title="Instagram"><InstagramIcon /></a>
-              <a href="/" className="p-2 bg-gray-700 rounded-full hover:bg-db-blue transition" title="Website"><Globe size={16} /></a>
+              <a href="https://www.instagram.com/donbosco.hathaura/" target="_blank" rel="noopener noreferrer" className="p-2 bg-gray-700 rounded-full hover:bg-db-gold hover:text-db-navy transition-all btn-press" title="Instagram"><InstagramIcon /></a>
+              <a href="/" className="p-2 bg-gray-700 rounded-full hover:bg-db-gold hover:text-db-navy transition-all btn-press" title="Website"><Globe size={16} /></a>
             </div>
           </div>
         </div>

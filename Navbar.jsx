@@ -81,7 +81,7 @@ export default function Navbar() {
           </div>
         </div>
       </div>
-      <nav className={`sticky top-0 z-50 text-white transition-all duration-300 ${scrolled || open ? 'glass shadow-lg' : 'bg-db-navy'}`}>
+      <nav className={`sticky top-10 z-50 text-white transition-all duration-300 ${scrolled || open ? 'glass shadow-lg' : 'bg-db-navy'}`}>
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           <Link to="/" className="flex items-center gap-2 group">

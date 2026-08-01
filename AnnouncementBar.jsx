@@ -3,7 +3,7 @@ import { Megaphone, ArrowRight } from 'lucide-react'
 
 export default function AnnouncementBar() {
   return (
-    <div className="bg-gradient-to-r from-amber-500 to-amber-600 text-slate-900">
+    <div className="fixed top-0 inset-x-0 z-[60] bg-gradient-to-r from-amber-500 to-amber-600 text-slate-900 shadow-lg">
       <div className="max-w-7xl mx-auto px-4 h-10 flex items-center gap-3">
         <span className="shrink-0 inline-flex items-center gap-1.5 bg-slate-900 text-amber-400 text-[11px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wide">
           <Megaphone size={12} /> Announcement

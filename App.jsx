@@ -11,6 +11,8 @@ const Admissions = lazy(() => import('./Admissions'))
 const Gallery = lazy(() => import('./Gallery'))
 const Events = lazy(() => import('./Events'))
 const Contact = lazy(() => import('./Contact'))
+const Disclosure = lazy(() => import('./Disclosure'))
+const Prospectus = lazy(() => import('./Prospectus'))
 const Login = lazy(() => import('./Login'))
 const Navbar = lazy(() => import('./Navbar'))
 const Footer = lazy(() => import('./Footer'))
@@ -78,6 +80,8 @@ export default function App() {
               <Route path="/gallery" element={<Gallery />} />
               <Route path="/events" element={<Events />} />
               <Route path="/contact" element={<Contact />} />
+              <Route path="/disclosure" element={<Disclosure />} />
+              <Route path="/prospectus" element={<Prospectus />} />
               <Route path="/login" element={<Login />} />
               <Route path="/parent-portal" element={<ParentPortal />} />
 

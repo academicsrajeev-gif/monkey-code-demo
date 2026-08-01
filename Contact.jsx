@@ -1,4 +1,7 @@
 import { Phone, Mail, MapPin, Clock, Send } from 'lucide-react'
+import { useState } from 'react'
+import { supabase, DEMO_MODE } from './lib/supabase'
+import { SCHOOL_INFO } from './lib/school-info'
 
 const InstagramIcon = ({ className = '' }) => (
   <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
@@ -7,8 +10,19 @@ const InstagramIcon = ({ className = '' }) => (
     <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
   </svg>
 )
-import { useState } from 'react'
-import { supabase, DEMO_MODE } from '../../lib/supabase'
+
+const FacebookIcon = ({ className = '' }) => (
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+  </svg>
+)
+
+const YouTubeIcon = ({ className = '' }) => (
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    <path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z" />
+    <polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02" />
+  </svg>
+)
 
 export default function Contact() {
   const [sent, setSent] = useState(false)
@@ -72,36 +86,50 @@ export default function Contact() {
                 <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center"><Phone size={22} className="text-db-blue" /></div>
                 <div>
                   <div className="text-sm text-gray-500">Phone</div>
-                  <div className="font-semibold text-db-dark">+91 6201956001</div>
+                  <div className="font-semibold text-db-dark">{SCHOOL_INFO.phone}</div>
                 </div>
               </div>
               <div className="bg-white p-6 rounded-2xl sticker-shadow flex items-center gap-4">
                 <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center"><Mail size={22} className="text-db-blue" /></div>
                 <div>
                   <div className="text-sm text-gray-500">Email</div>
-                  <div className="font-semibold text-db-dark">donbosco.hathaura@gmail.com</div>
+                  <div className="font-semibold text-db-dark">{SCHOOL_INFO.email}</div>
                 </div>
               </div>
               <div className="bg-white p-6 rounded-2xl sticker-shadow flex items-center gap-4">
                 <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center"><MapPin size={22} className="text-db-blue" /></div>
                 <div>
                   <div className="text-sm text-gray-500">Address</div>
-                  <div className="font-semibold text-db-dark">Don Bosco Public School, Hathaura</div>
+                  <div className="font-semibold text-db-dark">{SCHOOL_INFO.address.street}, {SCHOOL_INFO.address.village}, {SCHOOL_INFO.address.district}, {SCHOOL_INFO.address.state}, PIN {SCHOOL_INFO.address.pin}</div>
                 </div>
               </div>
               <div className="bg-white p-6 rounded-2xl sticker-shadow flex items-center gap-4">
                 <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center"><Clock size={22} className="text-db-blue" /></div>
                 <div>
                   <div className="text-sm text-gray-500">School Hours</div>
-                  <div className="font-semibold text-db-dark">Mon-Fri: 8:00 AM - 2:00 PM</div>
-                  <div className="text-xs text-gray-500">Office: 8:00 AM - 4:00 PM</div>
+                  <div className="font-semibold text-db-dark">{SCHOOL_INFO.schoolHours}</div>
+                  <div className="text-xs text-gray-500">Office: {SCHOOL_INFO.officeHours}</div>
                 </div>
               </div>
               <div className="bg-white p-6 rounded-2xl sticker-shadow flex items-center gap-4">
                 <div className="w-12 h-12 bg-pink-100 rounded-xl flex items-center justify-center"><InstagramIcon className="text-pink-600" /></div>
                 <div>
                   <div className="text-sm text-gray-500">Instagram</div>
-                  <a href="https://www.instagram.com/donbosco.hathaura/" target="_blank" rel="noopener noreferrer" className="font-semibold text-db-dark hover:text-blue-600">@donbosco.hathaura</a>
+                  <a href={SCHOOL_INFO.social.instagram} target="_blank" rel="noopener noreferrer" className="font-semibold text-db-dark hover:text-blue-600">@donbosco.hathaura</a>
+                </div>
+              </div>
+              <div className="bg-white p-6 rounded-2xl sticker-shadow flex items-center gap-4">
+                <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center"><FacebookIcon className="text-blue-600" /></div>
+                <div>
+                  <div className="text-sm text-gray-500">Facebook</div>
+                  <a href={SCHOOL_INFO.social.facebook} target="_blank" rel="noopener noreferrer" className="font-semibold text-db-dark hover:text-blue-600">@donbosco.hathaura</a>
+                </div>
+              </div>
+              <div className="bg-white p-6 rounded-2xl sticker-shadow flex items-center gap-4">
+                <div className="w-12 h-12 bg-red-100 rounded-xl flex items-center justify-center"><YouTubeIcon className="text-red-600" /></div>
+                <div>
+                  <div className="text-sm text-gray-500">YouTube</div>
+                  <a href={SCHOOL_INFO.social.youtube} target="_blank" rel="noopener noreferrer" className="font-semibold text-db-dark hover:text-blue-600">@donbosco.hathaura</a>
                 </div>
               </div>
             </div>

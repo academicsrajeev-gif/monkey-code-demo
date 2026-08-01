@@ -32,6 +32,8 @@ export default function Footer() {
               <Link to="/" className="block link-underline hover:text-db-gold">Home</Link>
               <Link to="/about" className="block link-underline hover:text-db-gold">About Us</Link>
               <Link to="/admissions" className="block link-underline hover:text-db-gold">Admissions</Link>
+              <Link to="/prospectus" className="block link-underline hover:text-db-gold">Prospectus</Link>
+              <Link to="/disclosure" className="block link-underline hover:text-db-gold">Public Disclosure</Link>
               <Link to="/parent-portal" className="block link-underline hover:text-db-gold">Parent Portal</Link>
               <Link to="/login" className="block link-underline hover:text-db-gold">Teacher Login</Link>
             </div>

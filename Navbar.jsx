@@ -9,6 +9,8 @@ const navLinks = [
   { path: '/', label: 'Home' },
   { path: '/about', label: 'About Us' },
   { path: '/admissions', label: 'Admissions' },
+  { path: '/prospectus', label: 'Prospectus' },
+  { path: '/disclosure', label: 'Disclosure' },
   { path: '/gallery', label: 'Gallery' },
   { path: '/events', label: 'Events' },
   { path: '/contact', label: 'Contact' },

@@ -76,3 +76,31 @@
     background: #fff !important;
   }
 }
+
+.announcement-marquee {
+  height: 2.5rem;
+  overflow: hidden;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+}
+
+.announcement-track {
+  display: inline-flex;
+  align-items: center;
+  animation: announcement-scroll 28s linear infinite;
+  will-change: transform;
+}
+
+.announcement-marquee:hover .announcement-track {
+  animation-play-state: paused;
+}
+
+@keyframes announcement-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}

@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { Phone, Mail, MapPin, Clock, BookOpen, Users, Heart, Shield, Star, Trophy, ArrowRight } from 'lucide-react'
+import { Phone, Mail, MapPin, Clock, BookOpen, Users, Heart, Shield, Star, Trophy, ArrowRight, Printer } from 'lucide-react'
 import { SCHOOL_INFO } from './lib/school-info'
 
 const highlights = [
@@ -27,6 +27,12 @@ export default function Prospectus() {
         <div className="relative max-w-7xl mx-auto px-4 text-center">
           <h1 className="text-4xl font-bold mb-4 font-display">School Prospectus</h1>
           <p className="text-blue-100 max-w-2xl mx-auto">Welcome to {SCHOOL_INFO.name}. Discover our vision, curriculum, and the life your child will enjoy here.</p>
+          <button
+            onClick={() => window.print()}
+            className="mt-6 inline-flex items-center gap-2 px-5 py-2.5 bg-db-gold text-db-navy font-semibold rounded-xl hover:bg-amber-400 transition-all btn-press focus-ring"
+          >
+            <Printer size={18} /> Download / Print Prospectus
+          </button>
         </div>
       </section>
 

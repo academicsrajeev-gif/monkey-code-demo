@@ -67,3 +67,12 @@
     @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-db-gold focus-visible:ring-offset-2;
   }
 }
+
+@media print {
+  nav, footer, .no-print {
+    display: none !important;
+  }
+  body {
+    background: #fff !important;
+  }
+}

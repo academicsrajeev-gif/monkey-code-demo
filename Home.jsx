@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { ArrowRight, Users, Award, TreePine, Shield, BookOpen, CalendarCheck, Phone, MapPin, Trophy, Star, Medal } from 'lucide-react'
+import { ArrowRight, Users, Award, TreePine, Shield, BookOpen, CalendarCheck, Phone, MapPin, Trophy, Star, Medal, LogIn, Megaphone, CalendarDays, Camera, PhoneCall, LayoutDashboard, Pin } from 'lucide-react'
 import Chatbot from '../../components/Chatbot'
 import { demoData } from '../../lib/supabase'
 
@@ -105,6 +105,34 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Quick Access */}
+      <section className="py-10">
+        <div className="max-w-7xl mx-auto px-4">
+          <h2 className="text-2xl font-bold text-db-navy mb-6 font-display text-center">Quick Access</h2>
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+            {[
+              { icon: LayoutDashboard, title: 'Parent Portal', desc: 'Attendance, fees & homework', to: '/parent-portal', color: 'bg-emerald-100 text-emerald-600' },
+              { icon: LogIn, title: 'Teacher / Admin Login', desc: 'Staff app portal', to: '/login', color: 'bg-blue-100 text-blue-600' },
+              { icon: Megaphone, title: 'Notice Board', desc: 'Latest circulars', to: '/notices', color: 'bg-amber-100 text-amber-600' },
+              { icon: CalendarDays, title: 'Academic Calendar', desc: 'Events, exams & holidays', to: '/events', color: 'bg-purple-100 text-purple-600' },
+              { icon: Camera, title: 'Photo Gallery', desc: 'Moments & memories', to: '/gallery', color: 'bg-pink-100 text-pink-600' },
+              { icon: PhoneCall, title: 'Contact & Admission', desc: 'Talk to the school', to: '/contact', color: 'bg-cyan-100 text-cyan-600' },
+            ].map((t, i) => (
+              <Link key={i} to={t.to} className="card-lift p-5 group flex items-start gap-4">
+                <div className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 transition-transform duration-300 group-hover:scale-110 ${t.color}`}>
+                  <t.icon size={22} />
+                </div>
+                <div className="min-w-0">
+                  <div className="font-semibold text-db-navy mb-0.5 font-display">{t.title}</div>
+                  <div className="text-xs text-gray-500">{t.desc}</div>
+                </div>
+                <ArrowRight size={16} className="ml-auto shrink-0 text-gray-300 group-hover:text-db-blue transition-colors self-center" />
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Features */}
       <section className="py-16">
         <div className="max-w-7xl mx-auto px-4">
@@ -167,6 +195,36 @@ export default function Home() {
                 <p className="text-sm text-gray-600 leading-relaxed">{a.desc}</p>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Latest Notices */}
+      <section className="py-16 bg-white">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="flex items-center justify-between mb-8">
+            <h2 className="text-3xl font-bold text-db-navy font-display">Latest Notices</h2>
+            <Link to="/notices" className="text-db-blue font-semibold text-sm link-underline flex items-center gap-1">
+              View All <ArrowRight size={16} />
+            </Link>
+          </div>
+          <div className="grid md:grid-cols-3 gap-4">
+            {[...demoData.notices]
+              .sort((a, b) => new Date(b.date) - new Date(a.date))
+              .slice(0, 3)
+              .map(n => (
+                <div key={n.id} className="card-lift p-5">
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="text-xs font-bold text-db-blue bg-blue-50 px-2 py-0.5 rounded-full">{n.category}</span>
+                    {n.pinned && <span className="text-[10px] font-bold text-db-navy bg-db-gold/15 px-2 py-0.5 rounded-full flex items-center gap-1"><Pin size={10} /> Pinned</span>}
+                  </div>
+                  <h3 className="font-semibold text-db-dark mb-1">{n.title}</h3>
+                  <p className="text-xs text-gray-600 line-clamp-3 mb-3">{n.content}</p>
+                  <div className="text-xs text-gray-400">
+                    {new Date(n.date).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}
+                  </div>
+                </div>
+              ))}
           </div>
         </div>
       </section>

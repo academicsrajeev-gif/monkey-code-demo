@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
-import { Menu, X, User, LayoutDashboard, LogOut } from 'lucide-react'
+import { Menu, X, User, LayoutDashboard, LogOut, Phone, Mail, MapPin, Clock } from 'lucide-react'
 import { supabase } from './lib/supabase'
+import { SCHOOL_INFO } from './lib/school-info'
 
 const LOGO_URL = 'https://i.postimg.cc/xCCf0gxP/prod-temp-4ee49e0f-a3df-41ec-b9d4-b2f28e8e23bb-9ea92f409a1706133ed49b9433f1ab25.webp'
 
@@ -12,7 +13,8 @@ const navLinks = [
   { path: '/prospectus', label: 'Prospectus' },
   { path: '/disclosure', label: 'Disclosure' },
   { path: '/gallery', label: 'Gallery' },
-  { path: '/events', label: 'Events' },
+  { path: '/events', label: 'Calendar' },
+  { path: '/notices', label: 'Notices' },
   { path: '/contact', label: 'Contact' },
   { path: '/parent-portal', label: 'Parent Portal' },
 ]
@@ -54,7 +56,32 @@ export default function Navbar() {
   }
 
   return (
-    <nav className={`sticky top-0 z-50 text-white transition-all duration-300 ${scrolled || open ? 'glass shadow-lg' : 'bg-db-navy'}`}>
+    <>
+      <div className="hidden lg:block bg-db-navy border-b border-white/10 text-xs text-blue-100">
+        <div className="max-w-7xl mx-auto px-4 h-9 flex items-center justify-between gap-4">
+          <div className="flex items-center gap-6 min-w-0">
+            <span className="flex items-center gap-1.5 truncate">
+              <MapPin size={13} className="text-db-gold shrink-0" />
+              {SCHOOL_INFO.address.full}
+            </span>
+          </div>
+          <div className="flex items-center gap-6 shrink-0">
+            <span className="flex items-center gap-1.5">
+              <Phone size={13} className="text-db-gold shrink-0" />
+              <a href={`tel:${SCHOOL_INFO.phone.replace(/\s/g, '')}`} className="hover:text-db-gold transition-colors">{SCHOOL_INFO.phone}</a>
+            </span>
+            <span className="flex items-center gap-1.5">
+              <Mail size={13} className="text-db-gold shrink-0" />
+              <a href={`mailto:${SCHOOL_INFO.email}`} className="hover:text-db-gold transition-colors">{SCHOOL_INFO.email}</a>
+            </span>
+            <span className="flex items-center gap-1.5">
+              <Clock size={13} className="text-db-gold shrink-0" />
+              {SCHOOL_INFO.schoolHours}
+            </span>
+          </div>
+        </div>
+      </div>
+      <nav className={`sticky top-0 z-50 text-white transition-all duration-300 ${scrolled || open ? 'glass shadow-lg' : 'bg-db-navy'}`}>
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           <Link to="/" className="flex items-center gap-2 group">
@@ -65,7 +92,7 @@ export default function Navbar() {
             </div>
           </Link>
 
-          <div className="hidden md:flex items-center gap-1">
+          <div className="hidden xl:flex items-center gap-1">
             {isApp ? (
               <Link to="/" className="px-3 py-2 rounded-lg text-sm hover:bg-white/10 transition flex items-center gap-1">
                 <LayoutDashboard size={16} /> App Dashboard
@@ -97,14 +124,14 @@ export default function Navbar() {
             )}
           </div>
 
-          <button onClick={() => setOpen(!open)} className="md:hidden p-2 rounded-lg hover:bg-white/10 transition" aria-label="Toggle menu">
+          <button onClick={() => setOpen(!open)} className="xl:hidden p-2 rounded-lg hover:bg-white/10 transition" aria-label="Toggle menu">
             {open ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
       </div>
 
       {open && (
-        <div className="md:hidden bg-db-navy/95 backdrop-blur-xl border-t border-white/10 px-4 pb-4 space-y-1">
+        <div className="xl:hidden bg-db-navy/95 backdrop-blur-xl border-t border-white/10 px-4 pb-4 space-y-1">
           {navLinks.map(link => (
             <Link
               key={link.path}
@@ -132,5 +159,6 @@ export default function Navbar() {
         </div>
       )}
     </nav>
+    </>
   )
 }

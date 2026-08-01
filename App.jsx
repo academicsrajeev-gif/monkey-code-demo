@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { supabase, DEMO_MODE } from './lib/supabase'
+import AnnouncementBar from './AnnouncementBar'
 
 // Lazy load all pages to avoid import errors
 import { lazy, Suspense } from 'react'
@@ -71,6 +72,7 @@ export default function App() {
     <BrowserRouter>
       <Suspense fallback={<Loading />}>
         <div className="min-h-screen flex flex-col">
+          <AnnouncementBar />
           <Navbar />
           <main className="flex-1">
             <Routes>

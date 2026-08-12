@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rajeev Ranjan | Senior Data Engineer — Azure, Databricks &amp; AWS</title>
+    <meta name="description" content="Senior Data Engineer with 7+ years of experience building scalable data pipelines on Azure, Databricks and AWS for CHUBB, Nationwide Mutual and Marsh McLennan. Migrated 50+ Informatica mappings to PySpark and processes 1M+ records daily.">
+    <meta name="author" content="Rajeev Ranjan">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%2300D4FF'/%3E%3Cstop offset='1' stop-color='%230078D4'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='14' fill='%230B1226'/%3E%3Ccircle cx='32' cy='32' r='18' fill='url(%23g)'/%3E%3Ctext x='32' y='41' font-family='Arial,sans-serif' font-size='26' font-weight='bold' text-anchor='middle' fill='%230B1226'%3ER%3C/text%3E%3C/svg%3E">
+    <link rel="canonical" href="https://workspace-zeta-three-14.vercel.app/">
+
+    <!-- Open Graph / Twitter -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Rajeev Ranjan | Senior Data Engineer">
+    <meta property="og:description" content="Senior Data Engineer specializing in Azure, Databricks and AWS. 7+ years building scalable data pipelines for Fortune 500 clients.">
+    <meta property="og:url" content="https://workspace-zeta-three-14.vercel.app/">
+    <meta property="og:site_name" content="Rajeev Ranjan Portfolio">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Rajeev Ranjan | Senior Data Engineer">
+    <meta name="twitter:description" content="Senior Data Engineer specializing in Azure, Databricks and AWS. 7+ years building scalable data pipelines for Fortune 500 clients.">
+
+    <!-- Structured data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Rajeev Ranjan",
+        "jobTitle": "Senior Data Engineer",
+        "url": "https://workspace-zeta-three-14.vercel.app/",
+        "email": "mailto:connectwithrajeevr@gmail.com",
+        "telephone": "+918770794667",
+        "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Gurugram",
+            "addressCountry": "IN"
+        },
+        "alumniOf": {
+            "@type": "CollegeOrUniversity",
+            "name": "Rajiv Gandhi Technical University, Bhopal"
+        },
+        "sameAs": [
+            "https://linkedin.com/in/lethalrajeev"
+        ],
+        "knowsAbout": ["Azure", "Databricks", "AWS", "PySpark", "Python", "SQL", "Apache Spark", "Delta Lake", "Unity Catalog", "Power BI", "Generative AI", "RAG"]
+    }
+    </script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <!-- AOS -->
+    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css">
+
+    <!-- Devicon (tech logos) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css">
+
+    <link rel="stylesheet" href="style.css?v=5">
+</head>
+<body>
+
+    <a href="#main" class="skip-link">Skip to main content</a>
+
+    <!-- ===== PAGE LOADER ===== -->
+    <div id="loader" class="loader">
+        <div class="loader-inner">
+            <div class="loader-monogram">RR</div>
+            <div class="loader-bar">
+                <div class="loader-bar-fill"></div>
+            </div>
+            <p class="loader-text">Loading portfolio...</p>
+        </div>
+    </div>
+
+    <!-- ===== SCROLL TO TOP ===== -->
+    <button id="scrollTopBtn" class="scroll-top" aria-label="Scroll to top">
+        <i class="fas fa-chevron-up"></i>
+    </button>
+
+    <!-- ===== NAVBAR ===== -->
+    <nav id="navbar" class="navbar">
+        <div class="nav-container">
+            <a href="#home" class="nav-logo">
+                <span class="logo-monogram">RR</span>
+                <span class="logo-text">Rajeev<span class="logo-dot">.</span></span>
+            </a>
+            <div class="nav-overlay" id="navOverlay" hidden></div>
+            <ul class="nav-links" id="navLinks" role="list">
+                <li><a href="#home" class="nav-link active">Home</a></li>
+                <li><a href="#about" class="nav-link">About</a></li>
+                <li><a href="#skills" class="nav-link">Skills</a></li>
+                <li><a href="#experience" class="nav-link">Experience</a></li>
+                <li><a href="#projects" class="nav-link">Projects</a></li>
+                <li><a href="#certifications" class="nav-link">Certifications</a></li>
+                <li><a href="#contact" class="nav-link">Contact</a></li>
+            </ul>
+            <div class="nav-actions">
+                <button id="themeToggle" class="theme-toggle" aria-label="Switch to light theme" type="button">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <button id="hamburger" class="hamburger" aria-label="Open menu" aria-expanded="false" aria-controls="navLinks" type="button">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <main id="main">
+
+    <!-- ===== HERO ===== -->
+    <header id="home" class="hero">
+        <div id="particles-js"></div>
+        <div class="hero-content">
+            <div class="hero-profile">
+                <div class="profile-ring">
+                    <div class="profile-ring-glow"></div>
+                    <div class="profile-avatar">
+                        <span class="avatar-initials">RR</span>
+                        <div class="status-badge"><i class="fas fa-circle"></i> Open to Work</div>
+                    </div>
+                    <!-- Floating tech logos -->
+                    <div class="float-logo float-pyspark"><i class="devicon-python-plain colored"></i></div>
+                    <div class="float-logo float-spark"><i class="devicon-apachespark-plain colored"></i></div>
+                    <div class="float-logo float-azure"><i class="devicon-azure-plain colored"></i></div>
+                    <div class="float-logo float-aws"><i class="devicon-amazonwebservices-plain-wordmark colored"></i></div>
+                    <div class="float-logo float-sql"><i class="devicon-postgresql-plain colored"></i></div>
+                    <div class="float-logo float-linux"><i class="devicon-linux-plain"></i></div>
+                </div>
+            </div>
+
+            <div class="hero-text">
+                <p class="hero-hello" data-aos="fade-up">Hello, I'm</p>
+                <h1 class="hero-name" data-aos="fade-up" data-aos-delay="100">Rajeev Ranjan</h1>
+                <div class="hero-typed-wrap" data-aos="fade-up" data-aos-delay="200">
+                    <span class="typed-prefix">I am a </span>
+                    <span id="typed"></span>
+                </div>
+                <p class="hero-summary" data-aos="fade-up" data-aos-delay="300">
+                    Senior Data Engineer with <strong>7+ years</strong> building data pipelines for
+                    <strong>CHUBB</strong>, <strong>Nationwide Mutual</strong> and <strong>Marsh McLennan</strong>.
+                    Migrated 50+ Informatica mappings to PySpark on Databricks — cut runtimes by <strong>83%</strong>,
+                    processing <strong>1M+ records daily</strong>.
+                </p>
+                <div class="hero-badges" data-aos="fade-up" data-aos-delay="400">
+                    <span class="tech-badge"><i class="devicon-azure-plain colored"></i> Azure</span>
+                    <span class="tech-badge"><i class="devicon-apachespark-plain colored"></i> Databricks</span>
+                    <span class="tech-badge"><i class="devicon-amazonwebservices-plain-wordmark colored"></i> AWS</span>
+                    <span class="tech-badge"><i class="devicon-python-plain colored"></i> PySpark</span>
+                </div>
+                <div class="hero-cta" data-aos="fade-up" data-aos-delay="500">
+                    <a href="assets/RajeevRanjan_CV.pdf" class="btn btn-primary" id="downloadCvBtn" download="RajeevRanjan_CV.pdf">
+                        <i class="fas fa-download"></i> Download CV
+                    </a>
+                    <a href="#contact" class="btn btn-outline">
+                        <i class="fas fa-paper-plane"></i> Hire Me
+                    </a>
+                </div>
+                <div class="hero-meta" data-aos="fade-up" data-aos-delay="600">
+                    <span class="meta-item"><i class="fas fa-map-marker-alt"></i> Gurugram, India</span>
+                    <span class="meta-item"><i class="fas fa-envelope"></i> <a href="mailto:connectwithrajeevr@gmail.com" class="hover:underline">connectwithrajeevr@gmail.com</a></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="scroll-indicator">
+            <div class="mouse">
+                <div class="wheel"></div>
+            </div>
+            <p>Scroll to explore</p>
+        </div>
+    </header>
+
+    <!-- ===== STATS / COUNTERS ===== -->
+    <section class="stats-section">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-card" data-aos="fade-up" data-aos-delay="0">
+                    <i class="fas fa-briefcase"></i>
+                    <div class="stat-number"><span class="counter" data-target="7">7</span>+</div>
+                    <p>Years Experience</p>
+                </div>
+                <div class="stat-card" data-aos="fade-up" data-aos-delay="100">
+                    <i class="fas fa-code-branch"></i>
+                    <div class="stat-number"><span class="counter" data-target="50">50</span>+</div>
+                    <p>Migrations</p>
+                </div>
+                <div class="stat-card" data-aos="fade-up" data-aos-delay="200">
+                    <i class="fas fa-rocket"></i>
+                    <div class="stat-number"><span class="counter" data-target="83">83</span>%</div>
+                    <p>Faster Pipelines</p>
+                </div>
+                <div class="stat-card" data-aos="fade-up" data-aos-delay="300">
+                    <i class="fas fa-database"></i>
+                    <div class="stat-number"><span class="counter" data-target="1">1</span>M+</div>
+                    <p>Records / Day</p>
+                </div>
+                <div class="stat-card" data-aos="fade-up" data-aos-delay="400">
+                    <i class="fas fa-shield-halved"></i>
+                    <div class="stat-number"><span class="counter" data-target="99.9">99.9</span>%</div>
+                    <p>Uptime</p>
+                </div>
+                <div class="stat-card" data-aos="fade-up" data-aos-delay="500">
+                    <i class="fas fa-money-bill-trend-up"></i>
+                    <div class="stat-number"><span class="counter" data-target="35">35</span>%</div>
+                    <p>Cost Saved</p>
+                </div>
+                <div class="stat-card" data-aos="fade-up" data-aos-delay="600">
+                    <i class="fas fa-certificate"></i>
+                    <div class="stat-number"><span class="counter" data-target="6">6</span></div>
+                    <p>Certifications</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== ABOUT ===== -->
+    <section id="about" class="section about-section">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <span class="section-tag">About Me</span>
+                <h2 class="section-title">Turning Raw Data into <span class="gradient-text">Business Gold</span></h2>
+                <div class="section-line"></div>
+            </div>
+            <div class="about-grid">
+                <div class="about-card" data-aos="fade-right">
+                    <div class="about-icon"><i class="fas fa-user-astronaut"></i></div>
+                    <h3>Who I Am</h3>
+                    <p>
+                        I'm a data engineer who loves building reliable, scalable data platforms. From on-premises
+                        Informatica stacks to modern lakehouse architectures on Databricks, I've spent 7+ years
+                        making data move faster, cheaper and safer for the world's biggest insurers.
+                    </p>
+                </div>
+                <div class="about-card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="about-icon"><i class="fas fa-bullseye"></i></div>
+                    <h3>What I Do</h3>
+                    <p>
+                        Design end-to-end ETL pipelines, migrate legacy workloads, tune SQL for performance and
+                        enforce governance with Unity Catalog. I bridge the gap between business needs and
+                        production-grade, cloud-native data engineering.
+                    </p>
+                </div>
+                <div class="about-card" data-aos="fade-left" data-aos-delay="200">
+                    <div class="about-icon"><i class="fas fa-lightbulb"></i></div>
+                    <h3>Why Me</h3>
+                    <p>
+                        Zero compliance breaches, 99.9% uptime, 83% faster pipelines. I measure my work in
+                        numbers — because in data engineering, performance isn't a promise, it's a
+                        benchmark that must be delivered every single day.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== SKILLS ===== -->
+    <section id="skills" class="section skills-section">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <span class="section-tag">Technical Arsenal</span>
+                <h2 class="section-title">My <span class="gradient-text">Skills</span></h2>
+                <div class="section-line"></div>
+            </div>
+
+            <div class="skills-tabs" data-aos="fade-up">
+                <button class="skill-tab active" data-category="core"><i class="fas fa-database"></i> Core Data Engineering</button>
+                <button class="skill-tab" data-category="azure"><i class="devicon-azure-plain colored"></i> Azure</button>
+                <button class="skill-tab" data-category="aws"><i class="devicon-amazonwebservices-plain colored"></i> AWS</button>
+                <button class="skill-tab" data-category="ai"><i class="fas fa-robot"></i> AI &amp; GenAI</button>
+            </div>
+
+            <div class="skills-content">
+                <!-- Core Data Engineering -->
+                <div class="skill-category active" id="core">
+                    <div class="skill-grid">
+                        <div class="skill-card"><div class="skill-head"><i class="devicon-python-plain colored"></i><span>PySpark</span></div><div class="skill-bar" role="progressbar" aria-valuenow="95" aria-valuemin="0" aria-valuemax="100" aria-label="PySpark"><span class="skill-bar-fill" data-level="95"></span></div></div>
+                        <div class="skill-card"><div class="skill-head"><i class="devicon-python-plain colored"></i><span>Python</span></div><div class="skill-bar" role="progressbar" aria-valuenow="92" aria-valuemin="0" aria-valuemax="100" aria-label="Python"><span class="skill-bar-fill" data-level="92"></span></div></div>
+                        <div class="skill-card"><div class="skill-head"><i class="devicon-postgresql-plain colored"></i><span>SQL</span></div><div class="skill-bar" role="progressbar" aria-valuenow="94" aria-valuemin="0" aria-valuemax="100" aria-label="SQL"><span class="skill-bar-fill" data-level="94"></span></div></div>
+                        <div class="skill-card"><div class="skill-head"><i class="devicon-apachespark-plain colored"></i><span>Apache Spark</span></div><div class="skill-bar" role="progressbar" aria-valuenow="93" aria-valuemin="0" aria-valuemax="100" aria-label="Apache Spark"><span class="skill-bar-fill" data-level="93"></span></div></div>
+                        <div class="skill-card"><div class="skill-head"><i class="devicon-apachespark-plain colored"></i><span>Databricks</span></div><div class="skill-bar" role="progressbar" aria-valuenow="96" aria-valuemin="0" aria-valuemax="100" aria-label="Databricks"><span class="skill-bar-fill" data-level="96"></span></div></div>
+                        <div class="skill-card"><div class="skill-head"><i class="fas fa-database"></i><span>Delta Lake</span></div><div class="skill-bar" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100" aria-label="Delta Lake"><span class="skill-bar-fill" data-level="90"></span></div></div>
+                        <div class="skill-card"><div class="skill-head"><i class="fas fa-shield-halved"></i><span>Unity Catalog</span></div><div class="skill-bar" role="progressbar" aria-valuenow="88" aria-valuemin="0" aria-valuemax="100" aria-label="Unity Catalog"><span class="skill-bar-fill" data-level="88"></span></div></div>
+                        <div class="skill-card"><div class="skill-head"><i class="fas fa-arrow-right-arrow-left"></i><span>Informatica</span></div><div class="skill-bar" role="progressbar" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100" aria-label="Informatica"><span class="skill-bar-fill" data-level="85"></span></div></div>
+                        <div class="skill-card"><div class="skill-head"><i class="fas fa-cloud-arrow-up"></i><span>On-prem to Cloud Migration</span></div><div class="skill-bar" role="progressbar" aria-valuenow="91" aria-valuemin="0" aria-valuemax="100" aria-label="On-prem to Cloud Migration"><span class="skill-bar-fill" data-level="91"></span></div></div>
+                        <div class="skill-card"><div class="skill-head"><i class="fas fa-chart-line"></i><span>Power BI</span></div><div class="skill-bar" role="progressbar" aria-valuenow="82" aria-valuemin="0" aria-valuemax="100" aria-label="Power BI"><span class="skill-bar-fill" data-level="82"></span></div></div>
+                        <div class="skill-card"><div class="skill-head"><i class="devicon-git-plain colored"></i><span>Git</span></div><div class="skill-bar" role="progressbar" aria-valuenow="88" aria-valuemin="0" aria-valuemax="100" aria-label="Git"><span class="skill-bar-fill" data-level="88"></span></div></div>
+                        <div class="skill-card"><div class="skill-head"><i class="devicon-github-original colored"></i><span>GitHub</span></div><div class="skill-bar" role="progressbar" aria-valuenow="87" aria-valuemin="0" aria-valuemax="100" aria-label="GitHub"><span class="skill-bar-fill" data-level="87"></span></div></div>
+                        <div class="skill-card"><div class="skill-head"><i class="devicon-jenkins-line colored"></i><span>Jenkins</span></div><div class="skill-bar" role="progressbar" aria-valuenow="78" aria-valuemin="0" aria-valuemax="100" aria-label="Jenkins"><span class="skill-bar-fill" data-level="78"></span></div></div>
+                    </div>
+                </div>
+
+                <!-- Azure -->
+                <div class="skill-category" id="azure">
+                    <div class="skill-grid">
+                        <div class="skill-card"><div class="skill-head"><i class="devicon-azure-plain colored"></i><span>Azure Data Factory</span></div><div class="skill-bar" role="progressbar" aria-valuenow="92" aria-valuemin="0" aria-valuemax="100" aria-label="Azure Data Factory"><span class="skill-bar-fill" data-level="92"></span></div></div>
+                        <div class="skill-card"><div class="skill-head"><i class="devicon-azure-plain colored"></i><span>Azure Synapse</span></div><div class="skill-bar" role="progressbar" aria-valuenow="84" aria-valuemin="0" aria-valuemax="100" aria-label="Azure Synapse"><span class="skill-bar-fill" data-level="84"></span></div></div>
+                        <div class="skill-card"><div class="skill-head"><i class="devicon-azure-plain colored"></i><span>ADLS Gen2</span></div><div class="skill-bar" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100" aria-label="ADLS Gen2"><span class="skill-bar-fill" data-level="90"></span></div></div>
+                        <div class="skill-card"><div class="skill-head"><i class="fas fa-eye"></i><span>Azure Monitor</span></div><div class="skill-bar" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" aria-label="Azure Monitor"><span class="skill-bar-fill" data-level="80"></span></div></div>
+                        <div class="skill-card"><div class="skill-head"><i class="fas fa-search"></i><span>KQL</span></div><div class="skill-bar" role="progressbar" aria-valuenow="82" aria-valuemin="0" aria-valuemax="100" aria-label="KQL"><span class="skill-bar-fill" data-level="82"></span></div></div>
+                    </div>
+                </div>
+
+                <!-- AWS -->
+                <div class="skill-category" id="aws">
+                    <div class="skill-grid">
+                        <div class="skill-card"><div class="skill-head"><i class="devicon-amazonwebservices-plain colored"></i><span>S3</span></div><div class="skill-bar" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100" aria-label="S3"><span class="skill-bar-fill" data-level="90"></span></div></div>
+                        <div class="skill-card"><div class="skill-head"><i class="devicon-amazonwebservices-plain colored"></i><span>EC2</span></div><div class="skill-bar" role="progressbar" aria-valuenow="78" aria-valuemin="0" aria-valuemax="100" aria-label="EC2"><span class="skill-bar-fill" data-level="78"></span></div></div>
+                        <div class="skill-card"><div class="skill-head"><i class="fas fa-user-shield"></i><span>IAM</span></div><div class="skill-bar" role="progressbar" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100" aria-label="IAM"><span class="skill-bar-fill" data-level="85"></span></div></div>
+                        <div class="skill-card"><div class="skill-head"><i class="devicon-amazonwebservices-plain colored"></i><span>Lambda</span></div><div class="skill-bar" role="progressbar" aria-valuenow="86" aria-valuemin="0" aria-valuemax="100" aria-label="Lambda"><span class="skill-bar-fill" data-level="86"></span></div></div>
+                        <div class="skill-card"><div class="skill-head"><i class="fas fa-cloud-sun"></i><span>CloudWatch</span></div><div class="skill-bar" role="progressbar" aria-valuenow="84" aria-valuemin="0" aria-valuemax="100" aria-label="CloudWatch"><span class="skill-bar-fill" data-level="84"></span></div></div>
+                        <div class="skill-card"><div class="skill-head"><i class="fas fa-cloud"></i><span>CloudFormation</span></div><div class="skill-bar" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" aria-label="CloudFormation"><span class="skill-bar-fill" data-level="80"></span></div></div>
+                        <div class="skill-card"><div class="skill-head"><i class="fas fa-bell"></i><span>SNS</span></div><div class="skill-bar" role="progressbar" aria-valuenow="82" aria-valuemin="0" aria-valuemax="100" aria-label="SNS"><span class="skill-bar-fill" data-level="82"></span></div></div>
+                    </div>
+                </div>
+
+                <!-- AI & GenAI -->
+                <div class="skill-category" id="ai">
+                    <div class="skill-grid">
+                        <div class="skill-card"><div class="skill-head"><i class="fas fa-brain"></i><span>Generative AI</span></div><div class="skill-bar" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" aria-label="Generative AI"><span class="skill-bar-fill" data-level="80"></span></div></div>
+                        <div class="skill-card"><div class="skill-head"><i class="fas fa-database"></i><span>RAG</span></div><div class="skill-bar" role="progressbar" aria-valuenow="78" aria-valuemin="0" aria-valuemax="100" aria-label="RAG"><span class="skill-bar-fill" data-level="78"></span></div></div>
+                        <div class="skill-card"><div class="skill-head"><i class="devicon-python-plain colored"></i><span>LangChain</span></div><div class="skill-bar" role="progressbar" aria-valuenow="76" aria-valuemin="0" aria-valuemax="100" aria-label="LangChain"><span class="skill-bar-fill" data-level="76"></span></div></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="skill-tools" data-aos="fade-up">
+                <h3 class="tools-title"><i class="fas fa-wrench"></i> Other Tools</h3>
+                <div class="tools-cloud">
+                    <span class="tool-chip"><i class="fab fa-jira"></i> Jira</span>
+                    <span class="tool-chip"><i class="fab fa-servicestack"></i> ServiceNow</span>
+                    <span class="tool-chip"><i class="fas fa-people-group"></i> Agile/Scrum</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== EXPERIENCE ===== -->
+    <section id="experience" class="section experience-section">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <span class="section-tag">Career Journey</span>
+                <h2 class="section-title">Work <span class="gradient-text">Experience</span></h2>
+                <div class="section-line"></div>
+            </div>
+
+            <div class="timeline">
+                <!-- Accenture / Marsh McLennan -->
+                <div class="timeline-item" data-aos="fade-up">
+                    <div class="timeline-dot current">
+                        <span class="pulse-dot"></span>
+                    </div>
+                    <div class="timeline-content">
+                        <div class="timeline-card">
+                            <div class="timeline-head">
+                                <div class="company-logos">
+                                    <img src="https://companieslogo.com/img/orig/ACN-d0a18fbe.svg" alt="Accenture" class="company-logo" data-domain="accenture.com" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='https://ui-avatars.com/api/?name=Accenture&background=A100FF&color=fff&size=40';this.style.padding='10px';">
+                                    <span class="logo-plus">+</span>
+                                    <img src="https://companieslogo.com/img/orig/MRSH-49621b9e.svg" alt="Marsh McLennan" class="company-logo" data-domain="marshmclennan.com" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='https://ui-avatars.com/api/?name=Marsh+McLennan&background=CC0000&color=fff&size=40';this.style.padding='10px';">
+                                </div>
+                                <div class="timeline-roles">
+                                    <span class="employer-tag"><i class="fas fa-building"></i> Employer: Accenture</span>
+                                    <span class="client-tag"><i class="fas fa-user-tie"></i> Client: Marsh McLennan</span>
+                                </div>
+                                <div class="timeline-heading">
+                                    <span class="timeline-badge current-badge"><span class="pulse-dot small"></span> Current</span>
+                                    <h3>Senior Data Engineer</h3>
+                                    <p class="timeline-company">Accenture</p>
+                                </div>
+                            </div>
+                            <div class="timeline-meta">
+                                <span><i class="fas fa-calendar-alt"></i> Jan 2026 – Present</span>
+                                <span><i class="fas fa-map-marker-alt"></i> Gurugram, India</span>
+                            </div>
+                            <ul class="timeline-points">
+                                <li>Deployed <strong>2 integrations in 3 months</strong> with 96% build success rate.</li>
+                                <li>Optimised Databricks ETL pipelines in a high-security BFSI environment.</li>
+                            </ul>
+                            <div class="timeline-tech">
+                                <span>Databricks</span><span>PySpark</span><span>ADF</span><span>Unity Catalog</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Accenture / CHUBB -->
+                <div class="timeline-item" data-aos="fade-up">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-card">
+                            <div class="timeline-head">
+                                <div class="company-logos">
+                                    <img src="https://companieslogo.com/img/orig/ACN-d0a18fbe.svg" alt="Accenture" class="company-logo" data-domain="accenture.com" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='https://ui-avatars.com/api/?name=Accenture&background=A100FF&color=fff&size=40';this.style.padding='10px';">
+                                    <span class="logo-plus">+</span>
+                                    <img src="https://companieslogo.com/img/orig/CB-c64ff053.svg" alt="CHUBB Insurance" class="company-logo" data-domain="chubb.com" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='https://ui-avatars.com/api/?name=CHUBB&background=E31837&color=fff&size=40';this.style.padding='10px';">
+                                </div>
+                                <div class="timeline-roles">
+                                    <span class="employer-tag"><i class="fas fa-building"></i> Employer: Accenture</span>
+                                    <span class="client-tag"><i class="fas fa-user-tie"></i> Client: CHUBB Insurance</span>
+                                </div>
+                                <div class="timeline-heading">
+                                    <h3>Senior Data Engineer</h3>
+                                    <p class="timeline-company">Accenture</p>
+                                </div>
+                            </div>
+                            <div class="timeline-meta">
+                                <span><i class="fas fa-calendar-alt"></i> Oct 2024 – Dec 2025</span>
+                                <span><i class="fas fa-map-marker-alt"></i> Gurugram, India</span>
+                            </div>
+                            <ul class="timeline-points">
+                                <li>Cut pipeline run time from <strong>3 hours to 20 minutes</strong> — an 83% improvement.</li>
+                                <li>Migrated <strong>50+ Informatica mappings</strong> to PySpark on Databricks.</li>
+                                <li>Maintained <strong>99.9% pipeline uptime</strong> with fault-tolerant ADF pipelines.</li>
+                                <li>Reduced cloud costs by <strong>35%</strong> via SQL optimisation.</li>
+                                <li>Connected <strong>10+ source systems</strong> to the Databricks Lakehouse.</li>
+                                <li>Zero compliance breaches across all production pipelines.</li>
+                            </ul>
+                            <div class="timeline-tech">
+                                <span>PySpark</span><span>Databricks</span><span>ADF</span><span>Delta Lake</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cognizant / Nationwide -->
+                <div class="timeline-item" data-aos="fade-up">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-card">
+                            <div class="timeline-head">
+                                <div class="company-logos">
+                                    <img src="https://companieslogo.com/img/orig/CTSH-e933644b.svg" alt="Cognizant" class="company-logo" data-domain="cognizant.com" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='https://ui-avatars.com/api/?name=Cognizant&background=1263B3&color=fff&size=40';this.style.padding='10px';">
+                                    <span class="logo-plus">+</span>
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6f/Nationwide_Insurance.svg" alt="Nationwide Mutual" class="company-logo" data-domain="nationwide.com" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='https://ui-avatars.com/api/?name=Nationwide&background=003DA5&color=fff&size=40';this.style.padding='10px';">
+                                </div>
+                                <div class="timeline-roles">
+                                    <span class="employer-tag"><i class="fas fa-building"></i> Employer: Cognizant</span>
+                                    <span class="client-tag"><i class="fas fa-user-tie"></i> Client: Nationwide Mutual</span>
+                                </div>
+                                <div class="timeline-heading">
+                                    <h3>Data Engineer</h3>
+                                    <p class="timeline-company">Cognizant</p>
+                                </div>
+                            </div>
+                            <div class="timeline-meta">
+                                <span><i class="fas fa-calendar-alt"></i> Feb 2022 – Oct 2024</span>
+                                <span><i class="fas fa-map-marker-alt"></i> Kolkata, India</span>
+                            </div>
+                            <ul class="timeline-points">
+                                <li>Processed <strong>1M+ records daily</strong> with 99% data reliability.</li>
+                                <li>Reduced ETL runtime by <strong>40%</strong> via partition tuning.</li>
+                                <li>Built automated <strong>S3-to-Databricks pipeline</strong> (Lambda + CloudFormation).</li>
+                                <li>Cut alert response time by <strong>70%</strong> with SNS + CloudWatch.</li>
+                                <li>Managed Unity Catalog governance for <strong>50+ users</strong>.</li>
+                            </ul>
+                            <div class="timeline-tech">
+                                <span>AWS</span><span>Databricks</span><span>Lambda</span><span>CloudFormation</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mindtree / Microsoft -->
+                <div class="timeline-item" data-aos="fade-up">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-card">
+                            <div class="timeline-head">
+                                <div class="company-logos">
+                                    <img src="https://companieslogo.com/img/orig/MINDTREE.NS-54bd2372.png" alt="Mindtree" class="company-logo" data-domain="mindtree.com" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='https://ui-avatars.com/api/?name=Mindtree&background=00A651&color=fff&size=40';this.style.padding='10px';">
+                                    <span class="logo-plus">+</span>
+                                    <img src="https://companieslogo.com/img/orig/MSFT-7d7cf874.svg" alt="Microsoft" class="company-logo" data-domain="microsoft.com" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='https://ui-avatars.com/api/?name=Microsoft&background=00A4EF&color=fff&size=40';this.style.padding='10px';">
+                                </div>
+                                <div class="timeline-roles">
+                                    <span class="employer-tag"><i class="fas fa-building"></i> Employer: Mindtree</span>
+                                    <span class="client-tag"><i class="fas fa-user-tie"></i> Client: Microsoft</span>
+                                </div>
+                                <div class="timeline-heading">
+                                    <h3>Power BI Engineer (SRE)</h3>
+                                    <p class="timeline-company">Mindtree</p>
+                                </div>
+                            </div>
+                            <div class="timeline-meta">
+                                <span><i class="fas fa-calendar-alt"></i> Nov 2018 – Feb 2022</span>
+                                <span><i class="fas fa-map-marker-alt"></i> Hyderabad, India</span>
+                            </div>
+                            <ul class="timeline-points">
+                                <li>Ensured <strong>99.9% Power BI availability</strong>, resolved SEV1/SEV2 incidents.</li>
+                                <li>Cut report refresh time by <strong>50%</strong> via SQL optimisation.</li>
+                                <li>Automated monitoring with Azure scripts and KQL dashboards.</li>
+                            </ul>
+                            <div class="timeline-tech">
+                                <span>Power BI</span><span>KQL</span><span>Azure</span><span>SQL</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== PROJECTS ===== -->
+    <section id="projects" class="section projects-section">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <span class="section-tag">Featured Work</span>
+                <h2 class="section-title">Flagship <span class="gradient-text">Projects</span></h2>
+                <div class="section-line"></div>
+            </div>
+
+            <div class="project-filters" data-aos="fade-up">
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="migration">Migration</button>
+                <button class="filter-btn" data-filter="automation">Automation</button>
+                <button class="filter-btn" data-filter="ai">AI / GenAI</button>
+                <button class="filter-btn" data-filter="governance">Governance</button>
+            </div>
+
+            <div class="projects-grid" id="projectsGrid">
+                <div class="project-card" data-category="migration" data-aos="fade-up" data-tilt>
+                    <div class="project-top">
+                        <div class="project-icons">
+                            <i class="devicon-apachespark-plain colored"></i>
+                            <i class="devicon-python-plain colored"></i>
+                            <i class="devicon-azure-plain colored"></i>
+                            <i class="fas fa-database"></i>
+                        </div>
+                        <span class="project-tag">Migration</span>
+                    </div>
+                    <h3 class="project-title">Informatica to PySpark Migration Engine</h3>
+                    <div class="project-case">
+                        <p class="case-line"><span class="case-label">Problem</span> Legacy Informatica workflows were slow to run, costly to maintain and hard to scale in the cloud.</p>
+                        <p class="case-line"><span class="case-label">Solution</span> Automated conversion of legacy Informatica workflows into production-grade PySpark jobs with unit-tested transforms and line-level lineage reporting.</p>
+                    </div>
+                    <div class="project-tech">
+                        <span>PySpark</span><span>Databricks</span><span>ADF</span><span>Delta Lake</span>
+                    </div>
+                    <div class="project-impact">
+                        <div class="impact-item"><span class="impact-val">83%</span><span class="impact-label">Faster</span></div>
+                        <div class="impact-item"><span class="impact-val">99.9%</span><span class="impact-label">Uptime</span></div>
+                        <div class="impact-item"><span class="impact-val">35%</span><span class="impact-label">Cost Cut</span></div>
+                    </div>
+                </div>
+
+                <div class="project-card" data-category="automation" data-aos="fade-up" data-aos-delay="100" data-tilt>
+                    <div class="project-top">
+                        <div class="project-icons">
+                            <i class="devicon-amazonwebservices-plain colored"></i>
+                            <i class="fas fa-bolt"></i>
+                            <i class="devicon-apachespark-plain colored"></i>
+                            <i class="fas fa-bell"></i>
+                        </div>
+                        <span class="project-tag">Automation</span>
+                    </div>
+                    <h3 class="project-title">Automated S3-to-Databricks Pipeline</h3>
+                    <div class="project-case">
+                        <p class="case-line"><span class="case-label">Problem</span> Raw files required manual, hands-on orchestration before reaching the lakehouse, delaying downstream analytics.</p>
+                        <p class="case-line"><span class="case-label">Solution</span> Event-driven serverless ingestion pipeline using Lambda and CloudFormation that lands and catalogues raw files into the lakehouse with zero-touch orchestration.</p>
+                    </div>
+                    <div class="project-tech">
+                        <span>Lambda</span><span>S3</span><span>CloudFormation</span><span>Databricks</span><span>SNS</span>
+                    </div>
+                    <div class="project-impact">
+                        <div class="impact-item"><span class="impact-val">60%</span><span class="impact-label">Faster Ingest</span></div>
+                        <div class="impact-item"><span class="impact-val">1M+</span><span class="impact-label">Daily Records</span></div>
+                    </div>
+                </div>
+
+                <div class="project-card" data-category="ai" data-aos="fade-up" data-aos-delay="200" data-tilt>
+                    <div class="project-top">
+                        <div class="project-icons">
+                            <i class="fas fa-brain"></i>
+                            <i class="devicon-python-plain colored"></i>
+                            <i class="fas fa-database"></i>
+                            <i class="devicon-apachespark-plain colored"></i>
+                        </div>
+                        <span class="project-tag">AI / GenAI</span>
+                    </div>
+                    <h3 class="project-title">GenAI ETL Automation Tool</h3>
+                    <div class="project-case">
+                        <p class="case-line"><span class="case-label">Problem</span> Hand-writing PySpark pipeline code for every new workload consumed hours of engineering time.</p>
+                        <p class="case-line"><span class="case-label">Solution</span> AI-augmented tool that generates PySpark pipeline code from natural-language descriptions using RAG over an internal documentation corpus — reducing build effort by hours.</p>
+                    </div>
+                    <div class="project-tech">
+                        <span>Python</span><span>LangChain</span><span>RAG</span><span>Databricks</span>
+                    </div>
+                    <div class="project-impact">
+                        <div class="impact-item"><span class="impact-val">AI</span><span class="impact-label">Augmented</span></div>
+                        <div class="impact-item"><span class="impact-val">hrs</span><span class="impact-label">Saved/Build</span></div>
+                    </div>
+                </div>
+
+                <div class="project-card" data-category="governance" data-aos="fade-up" data-aos-delay="300" data-tilt>
+                    <div class="project-top">
+                        <div class="project-icons">
+                            <i class="fas fa-shield-halved"></i>
+                            <i class="devicon-apachespark-plain colored"></i>
+                            <i class="devicon-azure-plain colored"></i>
+                            <i class="fas fa-database"></i>
+                        </div>
+                        <span class="project-tag">Governance</span>
+                    </div>
+                    <h3 class="project-title">Unity Catalog Governance Framework</h3>
+                    <div class="project-case">
+                        <p class="case-line"><span class="case-label">Problem</span> Workspace access sprawl made least-privilege security hard to enforce and kept compliance teams away from audit-readiness.</p>
+                        <p class="case-line"><span class="case-label">Solution</span> Enterprise-wide data access, lineage and audit framework enforcing least-privilege security across workspaces while keeping compliance teams audit-ready at all times.</p>
+                    </div>
+                    <div class="project-tech">
+                        <span>Databricks</span><span>Unity Catalog</span><span>Azure</span><span>SQL</span>
+                    </div>
+                    <div class="project-impact">
+                        <div class="impact-item"><span class="impact-val">Zero</span><span class="impact-label">Breaches</span></div>
+                        <div class="impact-item"><span class="impact-val">50+</span><span class="impact-label">Users Managed</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== CERTIFICATIONS ===== -->
+    <section id="certifications" class="section certs-section">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <span class="section-tag">Credentials</span>
+                <h2 class="section-title">Certifications &amp; <span class="gradient-text">Badges</span></h2>
+                <div class="section-line"></div>
+            </div>
+
+            <div class="certs-grid">
+                <div class="cert-card" data-aos="zoom-in">
+                    <div class="cert-shimmer"></div>
+                    <div class="cert-logo"><i class="devicon-apachespark-plain colored"></i></div>
+                    <div class="cert-issuer">Databricks</div>
+                    <h3 class="cert-title">Machine Learning Associate</h3>
+                    <div class="cert-verify">
+                        <a href="#" target="_blank" rel="noopener noreferrer" class="cert-verify-link" aria-label="Verify Databricks Machine Learning Associate credential"><i class="fas fa-circle-check"></i><span>Verified</span></a>
+                    </div>
+                </div>
+                <div class="cert-card" data-aos="zoom-in" data-aos-delay="100">
+                    <div class="cert-shimmer"></div>
+                    <div class="cert-logo"><i class="devicon-apachespark-plain colored"></i></div>
+                    <div class="cert-issuer">Databricks</div>
+                    <h3 class="cert-title">Generative AI Engineer Associate</h3>
+                    <div class="cert-verify">
+                        <a href="#" target="_blank" rel="noopener noreferrer" class="cert-verify-link" aria-label="Verify Databricks Generative AI Engineer Associate credential"><i class="fas fa-circle-check"></i><span>Verified</span></a>
+                    </div>
+                </div>
+                <div class="cert-card" data-aos="zoom-in" data-aos-delay="200">
+                    <div class="cert-shimmer"></div>
+                    <div class="cert-logo"><i class="devicon-apachespark-plain colored"></i></div>
+                    <div class="cert-issuer">Databricks</div>
+                    <h3 class="cert-title">Data Engineer Professional</h3>
+                    <div class="cert-verify">
+                        <a href="#" target="_blank" rel="noopener noreferrer" class="cert-verify-link" aria-label="Verify Databricks Data Engineer Professional credential"><i class="fas fa-circle-check"></i><span>Verified</span></a>
+                    </div>
+                </div>
+                <div class="cert-card" data-aos="zoom-in" data-aos-delay="300">
+                    <div class="cert-shimmer"></div>
+                    <div class="cert-logo"><i class="devicon-apachespark-plain colored"></i></div>
+                    <div class="cert-issuer">Databricks</div>
+                    <h3 class="cert-title">Data Engineer Associate</h3>
+                    <div class="cert-verify">
+                        <a href="#" target="_blank" rel="noopener noreferrer" class="cert-verify-link" aria-label="Verify Databricks Data Engineer Associate credential"><i class="fas fa-circle-check"></i><span>Verified</span></a>
+                    </div>
+                </div>
+                <div class="cert-card" data-aos="zoom-in" data-aos-delay="400">
+                    <div class="cert-shimmer"></div>
+                    <div class="cert-logo"><i class="devicon-azure-plain colored"></i></div>
+                    <div class="cert-issuer">Microsoft</div>
+                    <h3 class="cert-title">AZ-900 Azure Fundamentals</h3>
+                    <div class="cert-verify">
+                        <a href="#" target="_blank" rel="noopener noreferrer" class="cert-verify-link" aria-label="Verify Microsoft AZ-900 Azure Fundamentals credential"><i class="fas fa-circle-check"></i><span>Verified</span></a>
+                    </div>
+                </div>
+                <div class="cert-card" data-aos="zoom-in" data-aos-delay="500">
+                    <div class="cert-shimmer"></div>
+                    <div class="cert-logo"><i class="fas fa-chart-line"></i></div>
+                    <div class="cert-issuer">Microsoft</div>
+                    <h3 class="cert-title">PL-300 Power BI Data Analyst</h3>
+                    <div class="cert-verify">
+                        <a href="#" target="_blank" rel="noopener noreferrer" class="cert-verify-link" aria-label="Verify Microsoft PL-300 Power BI Data Analyst credential"><i class="fas fa-circle-check"></i><span>Verified</span></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="education-card" data-aos="fade-up">
+                <div class="edu-icon"><i class="fas fa-graduation-cap"></i></div>
+                <div class="edu-info">
+                    <h3>Rajiv Gandhi Technical University, Bhopal</h3>
+                    <p>B.E. in Computer Science <span class="sep">|</span> CGPA: <strong>8.1</strong></p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== CONTACT ===== -->
+    <section id="contact" class="section contact-section">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <span class="section-tag">Get In Touch</span>
+                <h2 class="section-title">Let's Build Something <span class="gradient-text">Together</span></h2>
+                <div class="section-line"></div>
+            </div>
+
+            <div class="contact-grid">
+                <div class="contact-info" data-aos="fade-right">
+                    <div class="contact-badge">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div>
+                            <strong>Based in</strong>
+                            <p>Gurugram, India</p>
+                        </div>
+                    </div>
+                    <div class="contact-badge">
+                        <i class="fas fa-envelope"></i>
+                        <div>
+                            <strong>Email</strong>
+                            <p><a href="mailto:connectwithrajeevr@gmail.com" class="hover:underline">connectwithrajeevr@gmail.com</a></p>
+                        </div>
+                    </div>
+                    <div class="contact-badge">
+                        <i class="fas fa-phone-alt"></i>
+                        <div>
+                            <strong>Phone</strong>
+                            <p>+91 8770794667</p>
+                        </div>
+                    </div>
+                    <div class="contact-badge">
+                        <i class="fab fa-linkedin"></i>
+                        <div>
+                            <strong>LinkedIn</strong>
+                            <p><a href="https://linkedin.com/in/lethalrajeev" target="_blank" rel="noreferrer" class="hover:underline">linkedin.com/in/lethalrajeev</a></p>
+                        </div>
+                    </div>
+                    <div class="contact-social">
+                        <a href="https://linkedin.com/in/lethalrajeev" target="_blank" rel="noopener" class="social-btn linkedin" aria-label="LinkedIn">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                        <a href="mailto:connectwithrajeevr@gmail.com" class="social-btn email" aria-label="Email">
+                            <i class="fas fa-envelope"></i>
+                        </a>
+                        <a href="tel:+918770794667" class="social-btn phone" aria-label="Phone">
+                            <i class="fas fa-phone"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <form id="contactForm" class="contact-form" data-aos="fade-left">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="from_name">Your Name</label>
+                            <input type="text" id="from_name" name="from_name" placeholder="John Doe" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="reply_to">Your Email</label>
+                            <input type="email" id="reply_to" name="reply_to" placeholder="john@example.com" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="subject">Subject</label>
+                        <input type="text" id="subject" name="subject" placeholder="Let's talk about a data role" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea id="message" name="message" rows="5" placeholder="Tell me about your project or opportunity..." required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary form-submit" id="submitBtn">
+                        <i class="fas fa-paper-plane"></i> Send Message
+                    </button>
+                    <div id="formStatus" class="form-status"></div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    </main>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <span class="logo-monogram">RR</span>
+                    <span>Rajeev Ranjan</span>
+                </div>
+                <p class="footer-tagline">Senior Data Engineer • Azure • Databricks • AWS</p>
+                <div class="footer-social">
+                    <a href="https://linkedin.com/in/lethalrajeev" target="_blank" rel="noopener"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="mailto:connectwithrajeevr@gmail.com"><i class="fas fa-envelope"></i></a>
+                </div>
+                <p class="footer-copy">© <span id="year"></span> Rajeev Ranjan. Built with <i class="fas fa-heart"></i> &amp; lots of coffee.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ===== LIBRARIES (CDN) ===== -->
+    <script src="https://cdn.jsdelivr.net/npm/tsparticles-slim@2.12.0/tsparticles.slim.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/typed.js@2.1.0/dist/typed.umd.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/countup.js/2.8.0/countUp.umd.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.1/vanilla-tilt.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4.3.3/dist/email.min.js"></script>
+
+    <script src="script.js?v=5"></script>
+</body>
+</html>

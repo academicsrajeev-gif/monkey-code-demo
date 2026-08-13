@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rajeev Ranjan - Senior Data Engineer Portfolio</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- React & ReactDOM -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    
+    <!-- Babel Standalone -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .animate-fadeIn {
+            animation: fadeIn 0.6s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useMemo, useEffect } = React;
+
+        const Icon = ({ name, className = "", size = 24, ...props }) => {
+            useEffect(() => {
+                if (typeof lucide !== 'undefined') {
+                    lucide.createIcons();
+                }
+            }, []);
+            
+            return React.createElement('i', {
+                'data-lucide': name,
+                className: className,
+                ...props
+            });
+        };
+
+        const RajeevRanjanPortfolio = () => {
+            const [darkMode, setDarkMode] = useState(true);
+            const [searchQuery, setSearchQuery] = useState('');
+            const [activeFilter, setActiveFilter] = useState('All');
+            const [showRecruiterModal, setShowRecruiterModal] = useState(false);
+            const [expandedJobs, setExpandedJobs] = useState({ 1: true, 2: true });
+            const [copiedEmail, setCopiedEmail] = useState(false);
+
+            useEffect(() => {
+                if (typeof lucide !== 'undefined') {
+                    lucide.createIcons();
+                }
+            }, [darkMode, showRecruiterModal, expandedJobs, activeFilter, searchQuery]);
+
+            const getCompanyLogoUrl = (domain, useClearbit = true) => {
+                if (useClearbit) {
+                    return `https://logo.clearbit.com/${domain}`;
+                }
+                return `https://www.google.com/s2/favicons?domain=${domain}&sz=128`;
+            };
+
+            const techIconMap = {
+                'pyspark': 'apachespark',
+                'python': 'python',
+                'sql': 'mysql',
+                'apache spark': 'apachespark',
+                'databricks': 'databricks',
+                'delta lake': 'databricks',
+                'unity catalog': 'databricks',
+                'azure': 'microsoftazure',
+                'azure data factory': 'microsoftazure',
+                'adf': 'microsoftazure',
+                'azure synapse': 'microsoftazure',
+                'azure synapse analytics': 'microsoftazure',
+                'adls gen2': 'microsoftazure',
+                'azure monitor': 'microsoftazure',
+                'kql': 'microsoftazure',
+                'azure sql database': 'microsoftazure',
+                'aws': 'amazonwebservices',
+                'aws s3': 'amazons3',
+                's3': 'amazons3',
+                'aws ec2': 'amazonec2',
+                'ec2': 'amazonec2',
+                'aws lambda': 'awslambda',
+                'lambda': 'awslambda',
+                'cloudwatch': 'amazoncloudwatch',
+                'aws cloudwatch': 'amazoncloudwatch',
+                'cloudformation': 'amazonaws',
+                'sns': 'amazonaws',
+                'iam': 'amazonaws',
+                'informatica': 'informatica',
+                'power bi': 'powerbi',
+                'powerbi': 'powerbi',
+                'etl': 'databricks',
+                'generative ai': 'openai',
+                'genai': 'openai',
+                'rag': 'openai',
+                'langchain': 'langchain',
+                'github': 'github',
+                'git': 'git',
+                'jenkins': 'jenkins',
+                'docker': 'docker',
+                'jira': 'jira',
+                'servicenow': 'servicenow',
+                'az-900': 'microsoftazure',
+                'pl-300': 'powerbi'
+            };
+
+            const getTechIconUrl = (techName) => {
+                const normalized = techName.toLowerCase().trim();
+                const slug = techIconMap[normalized] || normalized.replace(/\s+/g, '').replace(/[^a-z0-9]/g, '');
+                return `https://cdn.simpleicons.org/${slug}`;
+            };
+
+            const profileData = {
+                name: "Rajeev Ranjan",
+                title: "Senior Data Engineer | Azure | Databricks | AWS | Insurance & Financial Services",
+                location: "Gurugram, India",
+                phone: "+91 8770794667",
+                email: "connectwithrajeevr@gmail.com",
+                linkedin: "linkedin.com/in/lethalrajeev",
+                summary: "Senior Data Engineer with 7+ years of experience building high-performance data pipelines for Insurance and Financial Services clients including CHUBB, Nationwide Mutual, and Marsh McLennan. I have migrated 50+ Informatica mappings to PySpark on Databricks, cut pipeline runtimes by 83%, and built systems that process 1M+ records daily. I work at the intersection of cloud architecture (Azure & AWS) and real-world delivery — not just building pipelines, but making them faster, cheaper, and more resilient.",
+                yearsExperience: "7+",
+                keyMetrics: [
+                    { label: "Pipeline Runtime Reduction", value: "83%", icon: "zap" },
+                    { label: "Records Processed Daily", value: "1M+", icon: "database" },
+                    { label: "Informatica Mappings Migrated", value: "50+", icon: "trending-up" },
+                    { label: "Pipeline Uptime", value: "99.9%", icon: "check-circle" }
+                ]
+            };
+
+            const skills = {
+                "Languages": [
+                    { name: "PySpark", icon: "apachespark" },
+                    { name: "Python", icon: "python" },
+                    { name: "SQL", icon: "mysql" }
+                ],
+                "Big Data & Lakehouse": [
+                    { name: "Apache Spark", icon: "apachespark" },
+                    { name: "Databricks", icon: "databricks" },
+                    { name: "Delta Lake", icon: "databricks" },
+                    { name: "Unity Catalog", icon: "databricks" }
+                ],
+                "Cloud - Azure": [
+                    { name: "Azure Data Factory", icon: "microsoftazure" },
+                    { name: "Azure Synapse Analytics", icon: "microsoftazure" },
+                    { name: "ADLS Gen2", icon: "microsoftazure" },
+                    { name: "Azure Monitor", icon: "microsoftazure" },
+                    { name: "KQL", icon: "microsoftazure" }
+                ],
+                "Cloud - AWS": [
+                    { name: "S3", icon: "amazons3" },
+                    { name: "EC2", icon: "amazonec2" },
+                    { name: "IAM", icon: "amazonaws" },
+                    { name: "Lambda", icon: "awslambda" },
+                    { name: "CloudWatch", icon: "amazoncloudwatch" },
+                    { name: "CloudFormation", icon: "amazonaws" },
+                    { name: "SNS", icon: "amazonaws" }
+                ],
+                "ETL & Migration": [
+                    { name: "Informatica", icon: "informatica" },
+                    { name: "Databricks ETL Pipelines", icon: "databricks" }
+                ],
+                "AI / GenAI": [
+                    { name: "Generative AI", icon: "openai" },
+                    { name: "RAG", icon: "openai" },
+                    { name: "LangChain", icon: "langchain" }
+                ],
+                "CI/CD & DevOps": [
+                    { name: "GitHub", icon: "github" },
+                    { name: "Jenkins", icon: "jenkins" },
+                    { name: "Git", icon: "git" },
+                    { name: "Docker", icon: "docker" }
+                ],
+                "Collaboration": [
+                    { name: "Jira", icon: "jira" },
+                    { name: "ServiceNow", icon: "servicenow" }
+                ]
+            };
+
+            const experience = [
+                {
+                    id: 1,
+                    company: "Accenture",
+                    companyDomain: "accenture.com",
+                    client: "Marsh McLennan",
+                    clientDomain: "marshmclennan.com",
+                    role: "Senior Data Engineer",
+                    location: "Gurugram, India",
+                    duration: "Jan 2026 – Present",
+                    achievements: [
+                        "Delivered end-to-end deployment of 2 integrations within 3 months, achieving a 96% successful build rate — ensuring on-time delivery with high reliability.",
+                        "Continued development and optimisation of Databricks ETL pipelines in a large-scale BFSI environment, maintaining high availability and data quality standards."
+                    ],
+                    techStack: ["Databricks", "Azure Data Factory", "PySpark", "ETL"],
+                    metrics: { 
+                        "Build Rate": "96%", 
+                        "Integrations": "2", 
+                        "Timeline": "3 months" 
+                    }
+                },
+                {
+                    id: 2,
+                    company: "Accenture",
+                    companyDomain: "accenture.com",
+                    client: "CHUBB Insurance",
+                    clientDomain: "chubb.com",
+                    role: "Senior Data Engineer",
+                    location: "Gurugram, India",
+                    duration: "Oct 2024 – Dec 2025",
+                    achievements: [
+                        "Cut pipeline execution time from 3 hours to under 20 minutes by re-architecting ADF pipelines with advanced performance tuning on Azure Databricks.",
+                        "Migrated 50+ Informatica ETL mappings to PySpark on Databricks — eliminating legacy on-prem dependencies and reducing migration timelines by weeks.",
+                        "Achieved 99.9% pipeline uptime across critical insurance data workflows by building fault-tolerant ADF pipelines with retry logic and monitoring.",
+                        "Lowered cloud processing costs by 35% through custom SQL optimisation within ADF, reducing ingestion load and compute overhead.",
+                        "Designed end-to-end data integration architecture connecting 10+ source systems to a unified Databricks Lakehouse — enabling seamless cross-domain analytics.",
+                        "Enforced enterprise-grade data governance across all migration pipelines — zero compliance breaches across security, audit, and data quality checkpoints."
+                    ],
+                    techStack: ["Azure Data Factory", "Databricks", "PySpark", "Informatica", "SQL", "Delta Lake"],
+                    metrics: { 
+                        "Runtime Reduction": "83%", 
+                        "Mappings Migrated": "50+", 
+                        "Uptime": "99.9%", 
+                        "Cost Savings": "35%" 
+                    }
+                },
+                {
+                    id: 3,
+                    company: "Cognizant",
+                    companyDomain: "cognizant.com",
+                    client: "Nationwide Mutual Insurance",
+                    clientDomain: "nationwide.com",
+                    role: "Data Engineer",
+                    location: "Kolkata, India",
+                    duration: "Feb 2022 – Oct 2024",
+                    achievements: [
+                        "Processed 1M+ insurance records daily through PySpark pipelines on Databricks — with consistent schema alignment and 99% data reliability.",
+                        "Reduced PySpark ETL runtime by 40% through partition tuning, query optimisation, and replacing redundant transformations with reusable notebook functions.",
+                        "Built a fully automated S3-to-Databricks ingestion pipeline using AWS Lambda triggers and CloudFormation — removing manual handoffs and cutting ingestion lag by 60%.",
+                        "Reduced Databricks alert response time by 70% by implementing SNS-based notification workflows integrated with SMTP and AWS CloudWatch monitoring.",
+                        "Administered Unity Catalog and Databricks workspace governance — managing role-based data access for 50+ end-users across computational and data domains.",
+                        "Accelerated deployment cycles by automating S3 resource provisioning via CloudFormation templates and AWS Code Pipeline — eliminating manual infra setup."
+                    ],
+                    techStack: ["PySpark", "Databricks", "S3", "Lambda", "CloudFormation", "Unity Catalog", "CloudWatch"],
+                    metrics: { 
+                        "Records/Day": "1M+", 
+                        "Runtime Reduction": "40%", 
+                        "Alert Improvement": "70%",
+                        "Users Managed": "50+"
+                    }
+                },
+                {
+                    id: 4,
+                    company: "Mindtree Limited",
+                    companyDomain: "ltimindtree.com",
+                    client: "Microsoft",
+                    clientDomain: "microsoft.com",
+                    role: "Power BI Engineer (SRE)",
+                    location: "Hyderabad, India",
+                    duration: "Nov 2018 – Feb 2022",
+                    achievements: [
+                        "Maintained 99.9% Power BI service availability by resolving SEV1 and SEV2 incidents — reducing mean time to resolution across global outages.",
+                        "Cut report refresh time by 50% through SQL query and stored procedure optimisation — directly improving downstream analytics performance.",
+                        "Automated operational monitoring for Power BI workloads using Azure automation scripts, Power BI APIs, and KQL dashboards — reducing manual ops overhead by 30%.",
+                        "Orchestrated data ingestion pipelines via Azure Monitor, ADF, and Azure SQL Database — supporting real-time dashboards used by Microsoft teams globally."
+                    ],
+                    techStack: ["Power BI", "Azure", "SQL", "KQL", "Azure Data Factory", "Azure Monitor"],
+                    metrics: { 
+                        "Availability": "99.9%", 
+                        "Refresh Improvement": "50%", 
+                        "Ops Reduction": "30%" 
+                    }
+                }
+            ];
+
+            const certifications = [
+                { name: "Databricks Machine Learning Associate", issuer: "Databricks", icon: "databricks" },
+                { name: "Databricks Generative AI Engineer Associate", issuer: "Databricks", icon: "databricks" },
+                { name: "Databricks Data Engineer Professional", issuer: "Databricks", icon: "databricks" },
+                { name: "Databricks Data Engineer Associate", issuer: "Databricks", icon: "databricks" },
+                { name: "AZ-900: Microsoft Azure Fundamentals", issuer: "Microsoft", icon: "microsoftazure" },
+                { name: "PL-300: Microsoft Power BI Data Analyst", issuer: "Microsoft", icon: "powerbi" }
+            ];
+
+            const education = {
+                institution: "Rajiv Gandhi Technical University, Bhopal",
+                domain: "rgpv.ac.in",
+                degree: "Bachelor of Engineering in Computer Science",
+                cgpa: "8.1",
+                location: "Madhya Pradesh, India"
+            };
+
+            const filterCategories = ["All", "Data Engineering", "Cloud", "Analytics", "Migration", "DevOps"];
+
+            const CompanyLogo = ({ domain, name, size = "w-14 h-14" }) => {
+                const [imageError, setImageError] = useState(false);
+                const [useFallback, setUseFallback] = useState(false);
+
+                const handleError = () => {
+                    if (!useFallback) {
+                        setUseFallback(true);
+                    } else {
+                        setImageError(true);
+                    }
+                };
+
+                if (imageError) {
+                    const initials = name.split(' ').map(word => word[0]).join('').substring(0, 2).toUpperCase();
+                    const gradients = [
+                        'from-blue-500 to-purple-600',
+                        'from-green-500 to-teal-600',
+                        'from-orange-500 to-red-600',
+                        'from-pink-500 to-rose-600',
+                        'from-indigo-500 to-blue-600'
+                    ];
+                    const gradient = gradients[name.length % gradients.length];
+                    
+                    return (
+                        <div className={`${size} rounded-lg bg-gradient-to-br ${gradient} flex items-center justify-center text-white font-bold text-lg border-2 border-white/20`}>
+                            {initials}
+                        </div>
+                    );
+                }
+
+                return (
+                    <img
+                        src={useFallback ? getCompanyLogoUrl(domain, false) : getCompanyLogoUrl(domain, true)}
+                        alt={name}
+                        className={`${size} rounded-lg object-contain ${darkMode ? 'bg-white/5 p-2' : 'bg-gray-50 p-2'} border ${darkMode ? 'border-gray-700' : 'border-gray-200'}`}
+                        onError={handleError}
+                    />
+                );
+            };
+
+            const TechIcon = ({ tech, size = "w-5 h-5" }) => {
+                const [imageError, setImageError] = useState(false);
+
+                if (imageError) {
+                    return (
+                        <div className={`${size} rounded flex items-center justify-center bg-gradient-to-br from-blue-500 to-purple-600 text-white text-xs font-bold`}>
+                            {tech[0]}
+                        </div>
+                    );
+                }
+
+                return (
+                    <img 
+                        src={getTechIconUrl(tech)}
+                        alt={tech}
+                        className={`${size} object-contain`}
+                        onError={() => setImageError(true)}
+                    />
+                );
+            };
+
+            const filteredExperience = useMemo(() => {
+                return experience.filter(job => {
+                    const searchMatch = searchQuery === '' || 
+                        job.role.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                        job.client.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                        job.achievements.some(a => a.toLowerCase().includes(searchQuery.toLowerCase())) ||
+                        job.techStack.some(t => t.toLowerCase().includes(searchQuery.toLowerCase()));
+
+                    const filterMatch = activeFilter === 'All' || 
+                        (activeFilter === 'Data Engineering' && (job.techStack.some(t => ['PySpark', 'Databricks', 'ETL'].includes(t)))) ||
+                        (activeFilter === 'Cloud' && (job.techStack.some(t => t.includes('Azure') || t.includes('AWS') || ['S3', 'Lambda'].includes(t)))) ||
+                        (activeFilter === 'Analytics' && job.techStack.includes('Power BI')) ||
+                        (activeFilter === 'Migration' && job.techStack.includes('Informatica')) ||
+                        (activeFilter === 'DevOps' && (job.techStack.some(t => ['CloudFormation', 'Jenkins', 'GitHub'].includes(t))));
+
+                    return searchMatch && filterMatch;
+                });
+            }, [searchQuery, activeFilter]);
+
+            const copyEmail = () => {
+                navigator.clipboard.writeText(profileData.email);
+                setCopiedEmail(true);
+                setTimeout(() => setCopiedEmail(false), 2000);
+            };
+
+            const toggleJobExpansion = (id) => {
+                setExpandedJobs(prev => ({ ...prev, [id]: !prev[id] }));
+            };
+
+            return (
+                <div className={`min-h-screen transition-colors duration-300 ${darkMode ? 'bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950 text-gray-100' : 'bg-gradient-to-br from-gray-50 via-white to-gray-50 text-gray-900'}`}>
+                    
+                    {/* Sticky Header */}
+                    <header className={`sticky top-0 z-50 backdrop-blur-xl border-b ${darkMode ? 'bg-gray-900/90 border-gray-800' : 'bg-white/90 border-gray-200'} shadow-lg`}>
+                        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+                            <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+                                <div className="flex items-center gap-3">
+                                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-500 via-purple-600 to-pink-500 flex items-center justify-center text-xl font-bold shadow-lg">
+                                        RR
+                                    </div>
+                                    <div>
+                                        <h1 className="text-xl font-bold">{profileData.name}</h1>
+                                        <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>Senior Data Engineer</p>
+                                    </div>
+                                </div>
+                                
+                                <div className="flex flex-wrap items-center gap-3">
+                                    <button
+                                        onClick={() => setShowRecruiterModal(true)}
+                                        className="px-4 py-2 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg font-medium hover:shadow-lg hover:scale-105 transition-all flex items-center gap-2"
+                                    >
+                                        <Icon name="zap" className="w-4 h-4" />
+                                        <span className="hidden sm:inline">1-Min Highlight</span>
+                                    </button>
+                                    
+                                    <button
+                                        onClick={copyEmail}
+                                        className={`px-4 py-2 rounded-lg font-medium transition-all flex items-center gap-2 ${darkMode ? 'bg-gray-800 hover:bg-gray-700' : 'bg-gray-200 hover:bg-gray-300'}`}
+                                    >
+                                        <Icon name={copiedEmail ? "check-circle" : "copy"} className="w-4 h-4" />
+                                        <span className="hidden sm:inline">{copiedEmail ? 'Copied!' : 'Copy Email'}</span>
+                                    </button>
+                                    
+                                    <a
+                                        href={`https://${profileData.linkedin}`}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="px-4 py-2 bg-blue-600 rounded-lg font-medium hover:bg-blue-700 hover:scale-105 transition-all flex items-center gap-2"
+                                    >
+                                        <Icon name="linkedin" className="w-4 h-4" />
+                                        <span className="hidden sm:inline">LinkedIn</span>
+                                    </a>
+                                    
+                                    <button
+                                        className={`px-4 py-2 rounded-lg font-medium transition-all flex items-center gap-2 ${darkMode ? 'bg-green-600 hover:bg-green-700' : 'bg-green-500 hover:bg-green-600'} hover:scale-105`}
+                                    >
+                                        <Icon name="download" className="w-4 h-4" />
+                                        <span className="hidden sm:inline">Download CV</span>
+                                    </button>
+                                    
+                                    <button
+                                        onClick={() => setDarkMode(!darkMode)}
+                                        className={`p-2 rounded-lg transition-all hover:scale-110 ${darkMode ? 'bg-gray-800 hover:bg-gray-700' : 'bg-gray-200 hover:bg-gray-300'}`}
+                                    >
+                                        <Icon name={darkMode ? "sun" : "moon"} className="w-5 h-5" />
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </header>
+
+                    <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+                        
+                        {/* Hero Section */}
+                        <section className="mb-16 animate-fadeIn">
+                            <div className={`rounded-2xl p-8 sm:p-12 border backdrop-blur-sm ${darkMode ? 'bg-gradient-to-br from-gray-900/80 to-gray-800/80 border-gray-800' : 'bg-gradient-to-br from-white to-gray-50 border-gray-200'} shadow-2xl`}>
+                                <div className="flex flex-col md:flex-row items-start justify-between gap-8">
+                                    <div className="flex-1">
+                                        <div className="flex items-center gap-3 mb-4">
+                                            <Icon name="map-pin" className="w-5 h-5 text-blue-500" />
+                                            <span className={darkMode ? 'text-gray-400' : 'text-gray-600'}>{profileData.location}</span>
+                                        </div>
+                                        <h2 className="text-4xl sm:text-5xl font-bold mb-4 bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 bg-clip-text text-transparent">
+                                            {profileData.name}
+                                        </h2>
+                                        <p className="text-xl sm:text-2xl mb-6 font-medium text-blue-400">
+                                            Senior Data Engineer | Azure | Databricks | AWS
+                                        </p>
+                                        <p className={`text-lg leading-relaxed mb-6 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                                            {profileData.summary}
+                                        </p>
+                                        <div className="flex flex-wrap gap-4">
+                                            <a href={`mailto:${profileData.email}`} className="flex items-center gap-2 text-blue-400 hover:text-blue-300 transition-colors">
+                                                <Icon name="mail" className="w-5 h-5" />
+                                                {profileData.email}
+                                            </a>
+                                            <a href={`tel:${profileData.phone}`} className="flex items-center gap-2 text-blue-400 hover:text-blue-300 transition-colors">
+                                                <Icon name="phone" className="w-5 h-5" />
+                                                {profileData.phone}
+                                            </a>
+                                        </div>
+                                    </div>
+                                    
+                                    {/* Key Metrics Dashboard */}
+                                    <div className="grid grid-cols-2 gap-4">
+                                        {profileData.keyMetrics.map((metric, idx) => (
+                                            <div key={idx} className={`p-6 rounded-xl border backdrop-blur-sm hover:scale-105 transition-transform ${darkMode ? 'bg-gray-800/50 border-gray-700' : 'bg-white border-gray-200'} shadow-lg`}>
+                                                <Icon name={metric.icon} className="w-8 h-8 text-blue-500 mb-3" />
+                                                <div className="text-3xl font-bold bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent mb-1">{metric.value}</div>
+                                                <div className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>{metric.label}</div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        {/* Search & Filter Section */}
+                        <section className="mb-12">
+                            <div className={`rounded-xl p-6 border ${darkMode ? 'bg-gray-900/50 border-gray-800' : 'bg-white border-gray-200'} shadow-lg`}>
+                                <div className="flex flex-col lg:flex-row gap-4 items-center">
+                                    <div className="relative flex-1 w-full">
+                                        <Icon name="search" className={`absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 ${darkMode ? 'text-gray-500' : 'text-gray-400'}`} />
+                                        <input
+                                            type="text"
+                                            placeholder="Search projects, skills, achievements, technologies..."
+                                            value={searchQuery}
+                                            onChange={(e) => setSearchQuery(e.target.value)}
+                                            className={`w-full pl-12 pr-4 py-3 rounded-lg border transition-colors ${darkMode ? 'bg-gray-800 border-gray-700 text-gray-100 placeholder-gray-500 focus:border-blue-500' : 'bg-gray-50 border-gray-300 text-gray-900 placeholder-gray-400 focus:border-blue-500'} outline-none`}
+                                        />
+                                        {searchQuery && (
+                                            <button onClick={() => setSearchQuery('')} className="absolute right-4 top-1/2 transform -translate-y-1/2 hover:scale-110 transition-transform">
+                                                <Icon name="x" className="w-5 h-5 text-gray-500" />
+                                            </button>
+                                        )}
+                                    </div>
+                                    
+                                    <div className="flex flex-wrap gap-2">
+                                        {filterCategories.map((cat) => (
+                                            <button
+                                                key={cat}
+                                                onClick={() => setActiveFilter(cat)}
+                                                className={`px-4 py-2 rounded-lg font-medium transition-all hover:scale-105 ${
+                                                    activeFilter === cat
+                                                        ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg'
+                                                        : darkMode 
+                                                            ? 'bg-gray-800 text-gray-300 hover:bg-gray-700'
+                                                            : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                                                }`}
+                                            >
+                                                {cat}
+                                            </button>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        {/* Experience Timeline */}
+                        <section className="mb-16">
+                            <div className="flex items-center gap-3 mb-8">
+                                <Icon name="briefcase" className="w-8 h-8 text-blue-500" />
+                                <h2 className="text-3xl font-bold">Professional Experience</h2>
+                                <span className={`px-3 py-1 rounded-full text-sm font-medium ${darkMode ? 'bg-blue-900/30 text-blue-400 border border-blue-800' : 'bg-blue-100 text-blue-700 border border-blue-200'}`}>
+                                    {profileData.yearsExperience} years
+                                </span>
+                            </div>
+                            
+                            <div className="space-y-6">
+                                {filteredExperience.map((job, idx) => (
+                                    <div
+                                        key={job.id}
+                                        className={`rounded-xl border overflow-hidden transition-all hover:scale-[1.01] ${darkMode ? 'bg-gradient-to-br from-gray-900/80 to-gray-800/80 border-gray-800 hover:border-gray-700' : 'bg-gradient-to-br from-white to-gray-50 border-gray-200 hover:border-gray-300'} shadow-lg`}
+                                    >
+                                        <div className="p-6">
+                                            <div className="flex flex-col sm:flex-row items-start justify-between gap-4 mb-6">
+                                                <div className="flex items-start gap-4 flex-1">
+                                                    {/* Dual Logo Display */}
+                                                    <div className="flex gap-2">
+                                                        <div className="relative">
+                                                            <CompanyLogo domain={job.companyDomain} name={job.company} />
+                                                            <div className={`absolute -bottom-1 -right-1 px-2 py-0.5 rounded text-xs font-bold ${darkMode ? 'bg-gray-800 text-blue-400' : 'bg-white text-blue-600'} border ${darkMode ? 'border-gray-700' : 'border-gray-200'} shadow`}>
+                                                                Employer
+                                                            </div>
+                                                        </div>
+                                                        <div className="relative">
+                                                            <CompanyLogo domain={job.clientDomain} name={job.client} />
+                                                            <div className={`absolute -bottom-1 -right-1 px-2 py-0.5 rounded text-xs font-bold ${darkMode ? 'bg-gray-800 text-purple-400' : 'bg-white text-purple-600'} border ${darkMode ? 'border-gray-700' : 'border-gray-200'} shadow`}>
+                                                                Client
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div className="flex-1">
+                                                        <h3 className="text-xl font-bold mb-1 bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">{job.role}</h3>
+                                                        <div className={`text-lg mb-2 font-medium ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                                                            <span className="flex items-center gap-2 flex-wrap">
+                                                                <Icon name="building-2" className="w-4 h-4 text-blue-500" />
+                                                                {job.company}
+                                                                <span className={`px-2 py-0.5 rounded text-sm ${darkMode ? 'bg-purple-900/30 text-purple-400' : 'bg-purple-100 text-purple-700'}`}>
+                                                                    Client: {job.client}
+                                                                </span>
+                                                            </span>
+                                                        </div>
+                                                        <div className={`flex flex-wrap items-center gap-4 text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+                                                            <span className="flex items-center gap-1">
+                                                                <Icon name="calendar" className="w-4 h-4" />
+                                                                {job.duration}
+                                                            </span>
+                                                            <span className="flex items-center gap-1">
+                                                                <Icon name="map-pin" className="w-4 h-4" />
+                                                                {job.location}
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                
+                                                <button
+                                                    onClick={() => toggleJobExpansion(job.id)}
+                                                    className={`p-2 rounded-lg transition-all hover:scale-110 ${darkMode ? 'bg-gray-800 hover:bg-gray-700' : 'bg-gray-100 hover:bg-gray-200'}`}
+                                                >
+                                                    <Icon name={expandedJobs[job.id] ? "chevron-up" : "chevron-down"} className="w-5 h-5" />
+                                                </button>
+                                            </div>
+
+                                            {/* Tech Stack Chips */}
+                                            <div className="flex flex-wrap gap-2 mb-6">
+                                                {job.techStack.map((tech, techIdx) => (
+                                                    <span
+                                                        key={techIdx}
+                                                        className={`px-3 py-1.5 rounded-full text-sm font-medium flex items-center gap-2 transition-all hover:scale-105 ${darkMode ? 'bg-gray-800 text-gray-300 border border-gray-700' : 'bg-gray-100 text-gray-700 border border-gray-200'} shadow`}
+                                                    >
+                                                        <TechIcon tech={tech} size="w-4 h-4" />
+                                                        {tech}
+                                                    </span>
+                                                ))}
+                                            </div>
+
+                                            {/* Expandable Achievements */}
+                                            {expandedJobs[job.id] && (
+                                                <div className="space-y-3 mb-6">
+                                                    {job.achievements.map((achievement, achIdx) => (
+                                                        <div key={achIdx} className="flex items-start gap-3">
+                                                            <Icon name="check-circle" className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" />
+                                                            <p className={`${darkMode ? 'text-gray-300' : 'text-gray-700'} leading-relaxed`}>{achievement}</p>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            )}
+
+                                            {/* Key Metrics */}
+                                            {Object.keys(job.metrics).length > 0 && (
+                                                <div className={`pt-6 border-t grid grid-cols-2 sm:grid-cols-4 gap-4 ${darkMode ? 'border-gray-800' : 'border-gray-200'}`}>
+                                                    {Object.entries(job.metrics).map(([key, value]) => (
+                                                        <div key={key} className={`text-center p-3 rounded-lg ${darkMode ? 'bg-gray-800/50' : 'bg-gray-50'}`}>
+                                                            <div className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">{value}</div>
+                                                            <div className={`text-xs mt-1 ${darkMode ? 'text-gray-500' : 'text-gray-600'}`}>
+                                                                {key}
+                                                            </div>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            )}
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+
+                            {filteredExperience.length === 0 && (
+                                <div className={`text-center py-12 rounded-xl border ${darkMode ? 'bg-gray-900/30 border-gray-800' : 'bg-gray-50 border-gray-200'}`}>
+                                    <Icon name="search" className={`w-16 h-16 mx-auto mb-4 ${darkMode ? 'text-gray-700' : 'text-gray-400'}`} />
+                                    <p className={`text-lg ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+                                        No matching experience found. Try adjusting your search or filters.
+                                    </p>
+                                </div>
+                            )}
+                        </section>
+
+                        {/* Technical Skills */}
+                        <section className="mb-16">
+                            <div className="flex items-center gap-3 mb-8">
+                                <Icon name="code" className="w-8 h-8 text-purple-500" />
+                                <h2 className="text-3xl font-bold">Technical Skills</h2>
+                            </div>
+                            
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                {Object.entries(skills).map(([category, techs]) => (
+                                    <div
+                                        key={category}
+                                        className={`rounded-xl p-6 border hover:scale-[1.02] transition-transform ${darkMode ? 'bg-gradient-to-br from-gray-900/80 to-gray-800/80 border-gray-800' : 'bg-gradient-to-br from-white to-gray-50 border-gray-200'} shadow-lg`}
+                                    >
+                                        <h3 className="text-lg font-bold mb-4 bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent">{category}</h3>
+                                        <div className="flex flex-wrap gap-2">
+                                            {techs.map((tech, idx) => (
+                                                <span
+                                                    key={idx}
+                                                    className={`px-3 py-2 rounded-lg text-sm font-medium flex items-center gap-2 transition-all hover:scale-105 ${darkMode ? 'bg-gray-800 hover:bg-gray-700 border border-gray-700' : 'bg-gray-100 hover:bg-gray-200 border border-gray-200'}`}
+                                                >
+                                                    <TechIcon tech={tech.name} size="w-5 h-5" />
+                                                    {tech.name}
+                                                </span>
+                                            ))}
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </section>
+
+                        {/* Certifications */}
+                        <section className="mb-16">
+                            <div className="flex items-center gap-3 mb-8">
+                                <Icon name="award" className="w-8 h-8 text-yellow-500" />
+                                <h2 className="text-3xl font-bold">Certifications</h2>
+                                <span className={`px-3 py-1 rounded-full text-sm font-medium ${darkMode ? 'bg-yellow-900/30 text-yellow-400 border border-yellow-800' : 'bg-yellow-100 text-yellow-700 border border-yellow-200'}`}>
+                                    {certifications.length} credentials
+                                </span>
+                            </div>
+                            
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                {certifications.map((cert, idx) => (
+                                    <div
+                                        key={idx}
+                                        className={`rounded-xl p-6 border flex items-start gap-4 transition-all hover:scale-[1.02] ${darkMode ? 'bg-gradient-to-br from-gray-900/80 to-gray-800/80 border-gray-800 hover:border-gray-700' : 'bg-gradient-to-br from-white to-gray-50 border-gray-200 hover:border-gray-300'} shadow-lg`}
+                                    >
+                                        <TechIcon tech={cert.icon} size="w-12 h-12" />
+                                        <div className="flex-1">
+                                            <h3 className="font-bold mb-1">{cert.name}</h3>
+                                            <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>{cert.issuer}</p>
+                                        </div>
+                                        <Icon name="check-circle" className="w-6 h-6 text-green-500" />
+                                    </div>
+                                ))}
+                            </div>
+                        </section>
+
+                        {/* Education */}
+                        <section className="mb-16">
+                            <div className="flex items-center gap-3 mb-8">
+                                <Icon name="graduation-cap" className="w-8 h-8 text-green-500" />
+                                <h2 className="text-3xl font-bold">Education</h2>
+                            </div>
+                            
+                            <div className={`rounded-xl p-8 border ${darkMode ? 'bg-gradient-to-br from-gray-900/80 to-gray-800/80 border-gray-800' : 'bg-gradient-to-br from-white to-gray-50 border-gray-200'} shadow-lg`}>
+                                <div className="flex items-start gap-6">
+                                    <CompanyLogo domain={education.domain} name="RGPV" size="w-20 h-20" />
+                                    <div className="flex-1">
+                                        <h3 className="text-2xl font-bold mb-2 bg-gradient-to-r from-green-400 to-teal-500 bg-clip-text text-transparent">{education.institution}</h3>
+                                        <p className={`text-lg mb-3 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>{education.degree}</p>
+                                        <div className="flex flex-wrap gap-4">
+                                            <span className={`flex items-center gap-2 px-3 py-1 rounded-lg ${darkMode ? 'bg-gray-800 text-gray-400' : 'bg-gray-100 text-gray-600'}`}>
+                                                <Icon name="award" className="w-5 h-5 text-green-500" />
+                                                CGPA: {education.cgpa}
+                                            </span>
+                                            <span className={`flex items-center gap-2 px-3 py-1 rounded-lg ${darkMode ? 'bg-gray-800 text-gray-400' : 'bg-gray-100 text-gray-600'}`}>
+                                                <Icon name="map-pin" className="w-5 h-5 text-green-500" />
+                                                {education.location}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                    </main>
+
+                    {/* Recruiter Modal */}
+                    {showRecruiterModal && (
+                        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md" onClick={() => setShowRecruiterModal(false)}>
+                            <div
+                                className={`max-w-2xl w-full rounded-2xl p-8 border ${darkMode ? 'bg-gradient-to-br from-gray-900 to-gray-800 border-gray-800' : 'bg-gradient-to-br from-white to-gray-50 border-gray-200'} shadow-2xl`}
+                                onClick={(e) => e.stopPropagation()}
+                            >
+                                <div className="flex items-center justify-between mb-6">
+                                    <h2 className="text-2xl font-bold flex items-center gap-2">
+                                        <Icon name="zap" className="w-7 h-7 text-yellow-500" />
+                                        <span className="bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
+                                            Recruiter 1-Minute Highlight
+                                        </span>
+                                    </h2>
+                                    <button
+                                        onClick={() => setShowRecruiterModal(false)}
+                                        className={`p-2 rounded-lg transition-all hover:scale-110 ${darkMode ? 'hover:bg-gray-800' : 'hover:bg-gray-100'}`}
+                                    >
+                                        <Icon name="x" className="w-6 h-6" />
+                                    </button>
+                                </div>
+                                
+                                <div className="space-y-4">
+                                    <div className={`p-4 rounded-lg border ${darkMode ? 'bg-blue-900/20 border-blue-800' : 'bg-blue-50 border-blue-200'}`}>
+                                        <h3 className="font-bold text-blue-400 mb-2 flex items-center gap-2">
+                                            <Icon name="briefcase" className="w-5 h-5" />
+                                            🎯 Perfect For
+                                        </h3>
+                                        <p className={darkMode ? 'text-gray-300' : 'text-gray-700'}>Senior Data Engineer roles in Insurance, FinTech, or Cloud Data Platform teams</p>
+                                    </div>
+                                    
+                                    <div className={`p-4 rounded-lg border ${darkMode ? 'bg-green-900/20 border-green-800' : 'bg-green-50 border-green-200'}`}>
+                                        <h3 className="font-bold text-green-400 mb-2 flex items-center gap-2">
+                                            <Icon name="trending-up" className="w-5 h-5" />
+                                            ⚡ Top Impact
+                                        </h3>
+                                        <ul className={`space-y-2 text-sm ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                                            <li className="flex items-start gap-2">
+                                                <Icon name="check-circle" className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
+                                                Cut pipeline runtime by 83% (3 hours → 20 minutes)
+                                            </li>
+                                            <li className="flex items-start gap-2">
+                                                <Icon name="check-circle" className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
+                                                Migrated 50+ Informatica mappings to Databricks
+                                            </li>
+                                            <li className="flex items-start gap-2">
+                                                <Icon name="check-circle" className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
+                                                Processes 1M+ records daily with 99% reliability
+                                            </li>
+                                            <li className="flex items-start gap-2">
+                                                <Icon name="check-circle" className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
+                                                Reduced cloud costs by 35% through SQL optimization
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    
+                                    <div className={`p-4 rounded-lg border ${darkMode ? 'bg-purple-900/20 border-purple-800' : 'bg-purple-50 border-purple-200'}`}>
+                                        <h3 className="font-bold text-purple-400 mb-2 flex items-center gap-2">
+                                            <Icon name="code" className="w-5 h-5" />
+                                            🛠 Core Stack
+                                        </h3>
+                                        <div className="flex flex-wrap gap-2 mt-3">
+                                            {['PySpark', 'Databricks', 'Azure Data Factory', 'S3', 'Python', 'SQL'].map(tech => (
+                                                <span key={tech} className={`px-3 py-1 rounded-full text-sm font-medium flex items-center gap-2 ${darkMode ? 'bg-gray-800 text-gray-300' : 'bg-gray-100 text-gray-700'}`}>
+                                                    <TechIcon tech={tech} size="w-4 h-4" />
+                                                    {tech}
+                                                </span>
+                                            ))}
+                                        </div>
+                                    </div>
+                                    
+                                    <div className={`p-4 rounded-lg border ${darkMode ? 'bg-orange-900/20 border-orange-800' : 'bg-orange-50 border-orange-200'}`}>
+                                        <h3 className="font-bold text-orange-400 mb-2 flex items-center gap-2">
+                                            <Icon name="building-2" className="w-5 h-5" />
+                                            🏢 Enterprise Clients
+                                        </h3>
+                                        <div className="flex flex-wrap gap-4 mt-3">
+                                            {[
+                                                { name: 'CHUBB', domain: 'chubb.com' },
+                                                { name: 'Nationwide', domain: 'nationwide.com' },
+                                                { name: 'Marsh McLennan', domain: 'marshmclennan.com' },
+                                                { name: 'Microsoft', domain: 'microsoft.com' }
+                                            ].map(client => (
+                                                <div key={client.name} className="flex items-center gap-2">
+                                                    <CompanyLogo domain={client.domain} name={client.name} size="w-8 h-8" />
+                                                    <span className={`text-sm font-medium ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>{client.name}</span>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div className="mt-6 flex gap-3">
+                                    <button
+                                        onClick={copyEmail}
+                                        className="flex-1 py-3 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 rounded-lg font-medium transition-all flex items-center justify-center gap-2 hover:scale-105"
+                                    >
+                                        <Icon name="mail" className="w-5 h-5" />
+                                        {copiedEmail ? 'Email Copied!' : 'Copy Email'}
+                                    </button>
+                                    <a
+                                        href={`https://${profileData.linkedin}`}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="flex-1 py-3 bg-gradient-to-r from-blue-700 to-purple-700 hover:from-blue-800 hover:to-purple-800 rounded-lg font-medium transition-all flex items-center justify-center gap-2 hover:scale-105"
+                                    >
+                                        <Icon name="linkedin" className="w-5 h-5" />
+                                        Connect on LinkedIn
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Footer */}
+                    <footer className={`border-t py-8 ${darkMode ? 'bg-gray-900/50 border-gray-800' : 'bg-white border-gray-200'}`}>
+                        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                            <p className={darkMode ? 'text-gray-400' : 'text-gray-600'}>
+                                © 2025 {profileData.name}. Built with React + Tailwind CSS
+                            </p>
+                            <p className={`mt-2 text-sm ${darkMode ? 'text-gray-500' : 'text-gray-500'}`}>
+                                Available for Senior Data Engineer roles • Open to remote & hybrid opportunities
+                            </p>
+                        </div>
+                    </footer>
+                </div>
+            );
+        };
+
+        ReactDOM.render(<RajeevRanjanPortfolio />, document.getElementById('root'));
+    </script>
+</body>
+</html>

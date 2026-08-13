@@ -4,6 +4,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rajeev Ranjan - Senior Data Engineer Portfolio</title>
+    <meta name="description" content="Senior Data Engineer portfolio of Rajeev Ranjan — Azure, Databricks, AWS. 7+ years building high-performance data pipelines for CHUBB, Nationwide, and Marsh McLennan.">
+    <meta property="og:title" content="Rajeev Ranjan - Senior Data Engineer Portfolio">
+    <meta property="og:description" content="7+ years building high-performance data pipelines on Azure, Databricks & AWS. 83% runtime reduction, 50+ Informatica migrations, 1M+ records daily.">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="theme-color" content="#667eea">
+    <link rel="canonical" href="https://rajeev-old-portfolio.vercel.app/">
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Rajeev Ranjan",
+        "jobTitle": "Senior Data Engineer",
+        "email": "mailto:connectwithrajeevr@gmail.com",
+        "telephone": "+91 8770794667",
+        "address": { "@type": "PostalAddress", "addressLocality": "Gurugram", "addressRegion": "Haryana", "addressCountry": "IN" },
+        "alumniOf": { "@type": "CollegeOrUniversity", "name": "Rajiv Gandhi Technical University, Bhopal" },
+        "knowsAbout": ["Azure", "Databricks", "AWS", "PySpark", "Delta Lake", "Data Engineering", "Generative AI"]
+    }
+    </script>
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -63,7 +86,7 @@
     <div id="root"></div>
 
     <script type="text/babel">
-        const { useState, useMemo, useEffect } = React;
+        const { useState, useMemo, useEffect, useRef } = React;
 
         const Icon = ({ name, className = "", size = 24, ...props }) => {
             useEffect(() => {
@@ -90,13 +113,147 @@
             // New state for Architecture Diagrams & Code Showcase
             const [selectedArchId, setSelectedArchId] = useState('chubb-arch');
             const [activeCodeId, setActiveCodeId] = useState('chubb-migration');
-            const [codeViewMode, setCodeViewMode] = useState('after'); // 'before' or 'after'
+            const [codeViewMode, setCodeViewMode] = useState('after'); // 'before', 'after', or 'diff'
+
+            // New state for improvements
+            const [recordVolume, setRecordVolume] = useState(2);
+            const [selectedNode, setSelectedNode] = useState(null);
+            const barChartRef = useRef(null);
+            const barChartInstanceRef = useRef(null);
+            const radarChartRef = useRef(null);
+            const radarChartInstanceRef = useRef(null);
+            const modalRef = useRef(null);
 
             useEffect(() => {
                 if (typeof lucide !== 'undefined') {
                     lucide.createIcons();
                 }
-            }, [darkMode, showRecruiterModal, expandedJobs, activeFilter, searchQuery, selectedArchId, activeCodeId, codeViewMode]);
+            }, [darkMode, showRecruiterModal, expandedJobs, activeFilter, searchQuery, selectedArchId, activeCodeId, codeViewMode, selectedNode, recordVolume]);
+
+            // Keyboard accessibility: Escape closes modal, Tab focus trap inside modal
+            useEffect(() => {
+                const handleKeyDown = (e) => {
+                    if (e.key === 'Escape' && showRecruiterModal) {
+                        setShowRecruiterModal(false);
+                    }
+                    if (e.key === 'Tab' && showRecruiterModal && modalRef.current) {
+                        const focusables = modalRef.current.querySelectorAll('button, a[href], input, [tabindex]:not([tabindex="-1"])');
+                        if (!focusables.length) return;
+                        const first = focusables[0];
+                        const last = focusables[focusables.length - 1];
+                        if (e.shiftKey && document.activeElement === first) {
+                            e.preventDefault();
+                            last.focus();
+                        } else if (!e.shiftKey && document.activeElement === last) {
+                            e.preventDefault();
+                            first.focus();
+                        }
+                    }
+                };
+                window.addEventListener('keydown', handleKeyDown);
+                return () => window.removeEventListener('keydown', handleKeyDown);
+            }, [showRecruiterModal]);
+
+            useEffect(() => {
+                if (showRecruiterModal && modalRef.current) {
+                    const focusables = modalRef.current.querySelectorAll('button, a[href], input');
+                    if (focusables.length) focusables[0].focus();
+                }
+            }, [showRecruiterModal]);
+
+            // Execution-time bar chart (Code Showcase)
+            useEffect(() => {
+                if (typeof Chart === 'undefined' || !barChartRef.current) return;
+                if (barChartInstanceRef.current) {
+                    barChartInstanceRef.current.destroy();
+                }
+                const cd = chartData[currentCode.id] || chartData[codeSnippets[0].id];
+                barChartInstanceRef.current = new Chart(barChartRef.current, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Before', 'After'],
+                        datasets: [{
+                            label: cd.unit,
+                            data: [cd.before, cd.after],
+                            backgroundColor: [darkMode ? 'rgba(244,63,94,0.85)' : 'rgba(225,29,72,0.8)', darkMode ? 'rgba(16,185,129,0.85)' : 'rgba(5,150,105,0.8)'],
+                            borderRadius: 8
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { labels: { color: darkMode ? '#e5e7eb' : '#374151' } },
+                            tooltip: {
+                                callbacks: {
+                                    label: (ctx) => ` ${ctx.parsed.y} ${cd.unit}`
+                                }
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                grid: { color: darkMode ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.06)' },
+                                ticks: { color: darkMode ? '#9ca3af' : '#6b7280', callback: (v) => v + ' ' + cd.unit }
+                            },
+                            x: { grid: { display: false }, ticks: { color: darkMode ? '#9ca3af' : '#6b7280' } }
+                        }
+                    }
+                });
+                return () => {
+                    if (barChartInstanceRef.current) {
+                        barChartInstanceRef.current.destroy();
+                        barChartInstanceRef.current = null;
+                    }
+                };
+            }, [activeCodeId, darkMode]);
+
+            // Skill proficiency radar chart
+            useEffect(() => {
+                if (typeof Chart === 'undefined' || !radarChartRef.current) return;
+                if (radarChartInstanceRef.current) {
+                    radarChartInstanceRef.current.destroy();
+                }
+                radarChartInstanceRef.current = new Chart(radarChartRef.current, {
+                    type: 'radar',
+                    data: {
+                        labels: skillProficiency.labels,
+                        datasets: [{
+                            label: 'Proficiency (1-5)',
+                            data: skillProficiency.values,
+                            fill: true,
+                            backgroundColor: 'rgba(139,92,246,0.25)',
+                            borderColor: '#8b5cf6',
+                            pointBackgroundColor: '#a78bfa',
+                            pointBorderColor: darkMode ? '#1f2937' : '#ffffff',
+                            borderWidth: 2
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { labels: { color: darkMode ? '#e5e7eb' : '#374151' } }
+                        },
+                        scales: {
+                            r: {
+                                min: 0,
+                                max: 5,
+                                ticks: { stepSize: 1, backdropColor: 'transparent', color: darkMode ? '#9ca3af' : '#6b7280' },
+                                grid: { color: darkMode ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.06)' },
+                                angleLines: { color: darkMode ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.06)' },
+                                pointLabels: { color: darkMode ? '#d1d5db' : '#4b5563', font: { size: 11 } }
+                            }
+                        }
+                    }
+                });
+                return () => {
+                    if (radarChartInstanceRef.current) {
+                        radarChartInstanceRef.current.destroy();
+                        radarChartInstanceRef.current = null;
+                    }
+                };
+            }, [darkMode]);
 
             const getCompanyLogoUrl = (domain, useClearbit = true) => {
                 if (useClearbit) {
@@ -182,12 +339,12 @@
                     client: "CHUBB Insurance",
                     description: "Migration of 50+ Informatica mappings to Azure Databricks Medallion Lakehouse Architecture orchestrated via Azure Data Factory.",
                     nodes: [
-                        { id: 1, title: "10+ Source Systems", category: "Ingestion", desc: "Policy, Claims & Customer DBs (Oracle, DB2, SQL)", icon: "database" },
-                        { id: 2, title: "Azure Data Factory", category: "Orchestration", desc: "Automated ADF triggers with retry logic & SLA monitoring", icon: "workflow" },
-                        { id: 3, title: "Databricks Bronze Layer", category: "Raw Lakehouse", desc: "Raw append-only ingestion into ADLS Gen2 Delta format", icon: "hard-drive" },
-                        { id: 4, title: "Databricks Silver Layer", category: "Cleansed Data", desc: "PySpark transformations, deduplication & schema validation", icon: "cpu" },
-                        { id: 5, title: "Databricks Gold Layer", category: "Business Aggregates", desc: "Optimized Delta tables with Unity Catalog governance & Z-Ordering", icon: "layers" },
-                        { id: 6, title: "Power BI Analytics", category: "Analytics", desc: "Sub-second dashboards for enterprise risk reporting", icon: "bar-chart-3" }
+                        { id: 1, title: "10+ Source Systems", category: "Ingestion", desc: "Policy, Claims & Customer DBs (Oracle, DB2, SQL)", icon: "database", specs: ["Oracle, DB2 & SQL Server sources", "Full + incremental load patterns", "CDC via log-based change capture"] },
+                        { id: 2, title: "Azure Data Factory", category: "Orchestration", desc: "Automated ADF triggers with retry logic & SLA monitoring", icon: "workflow", specs: ["Trigger-based scheduling", "Retry logic with exponential backoff", "SLA monitoring via Azure Monitor"] },
+                        { id: 3, title: "Databricks Bronze Layer", category: "Raw Lakehouse", desc: "Raw append-only ingestion into ADLS Gen2 Delta format", icon: "hard-drive", specs: ["ADLS Gen2 with Delta format", "Append-only raw storage", "Schema-on-read flexibility"] },
+                        { id: 4, title: "Databricks Silver Layer", category: "Cleansed Data", desc: "PySpark transformations, deduplication & schema validation", icon: "cpu", specs: ["PySpark transformation framework", "Deduplication & type casting", "Unit-tested reusable notebooks"] },
+                        { id: 5, title: "Databricks Gold Layer", category: "Business Aggregates", desc: "Optimized Delta tables with Unity Catalog governance & Z-Ordering", icon: "layers", specs: ["Unity Catalog governance", "Z-Ordering on high-cardinality keys", "Optimized Delta tables for BI"] },
+                        { id: 6, title: "Power BI Analytics", category: "Analytics", desc: "Sub-second dashboards for enterprise risk reporting", icon: "bar-chart-3", specs: ["Sub-second dashboard performance", "Enterprise risk reporting", "Row-level security (RLS)"] }
                     ]
                 },
                 {
@@ -196,11 +353,11 @@
                     client: "Nationwide Mutual",
                     description: "High-throughput serverless ingestion and analytics platform processing 1M+ daily records.",
                     nodes: [
-                        { id: 1, title: "AWS S3 Landing Zone", category: "Storage", desc: "Daily ingestion of 1M+ raw insurance event payloads", icon: "cloud" },
-                        { id: 2, title: "AWS Lambda Event", category: "Serverless", desc: "Instant S3 notifications triggering Databricks jobs", icon: "zap" },
-                        { id: 3, title: "Databricks PySpark", category: "Compute", desc: "Partition-tuned Spark notebooks with reusable functions", icon: "cpu" },
-                        { id: 4, title: "Unity Catalog & CloudWatch", category: "Governance & Ops", desc: "Role-based access controls & SNS alert workflows", icon: "shield-check" },
-                        { id: 5, title: "Consumer Data Marts", category: "Consumption", desc: "Real-time risk analytics and claim status tracking", icon: "pie-chart" }
+                        { id: 1, title: "AWS S3 Landing Zone", category: "Storage", desc: "Daily ingestion of 1M+ raw insurance event payloads", icon: "cloud", specs: ["1M+ daily event payloads", "Partitioned by event date", "Versioned buckets for reprocessing"] },
+                        { id: 2, title: "AWS Lambda Event", category: "Serverless", desc: "Instant S3 notifications triggering Databricks jobs", icon: "zap", specs: ["S3 event-driven triggers", "Instant job invocation", "Serverless & zero idle compute cost"] },
+                        { id: 3, title: "Databricks PySpark", category: "Compute", desc: "Partition-tuned Spark notebooks with reusable functions", icon: "cpu", specs: ["Partition & shuffle tuning", "Reusable notebook functions", "Auto Loader streaming ingestion"] },
+                        { id: 4, title: "Unity Catalog & CloudWatch", category: "Governance & Ops", desc: "Role-based access controls & SNS alert workflows", icon: "shield-check", specs: ["RBAC for 50+ end-users", "SNS + SMTP alert workflows", "CloudWatch dashboards & alarms"] },
+                        { id: 5, title: "Consumer Data Marts", category: "Consumption", desc: "Real-time risk analytics and claim status tracking", icon: "pie-chart", specs: ["Real-time risk analytics", "Claim status tracking", "PII-safe curated schemas"] }
                     ]
                 }
             ];
@@ -306,6 +463,31 @@ def lambda_handler(event, context):
                 }
             ];
 
+            const chartData = {
+                'chubb-migration': {
+                    label: 'CHUBB Pipeline Runtime',
+                    unit: 'Minutes',
+                    before: 180,
+                    after: 20
+                },
+                'nationwide-aws': {
+                    label: 'Nationwide Ingestion Lag',
+                    unit: 'Minutes',
+                    before: 240,
+                    after: 96
+                }
+            };
+
+            const skillProficiency = {
+                labels: ['PySpark', 'Databricks', 'SQL', 'Azure', 'AWS', 'GenAI / RAG', 'ETL & Migration', 'CI/CD & DevOps'],
+                values: [5, 5, 4, 4, 4, 4, 5, 4]
+            };
+
+            const costModel = {
+                beforePerMillion: 12.0,
+                afterPerMillion: 4.2
+            };
+
             const skills = {
                 "Languages": [
                     { name: "PySpark", icon: "apachespark" },
@@ -374,7 +556,12 @@ def lambda_handler(event, context):
                         "Build Rate": "96%", 
                         "Integrations": "2", 
                         "Timeline": "3 months" 
-                    }
+                    },
+                    impact: [
+                        { icon: "check-check", label: "Build Success", value: "96%", desc: "2 integrations deployed end-to-end within 3 months" },
+                        { icon: "building-2", label: "Client Scale", value: "BFSI", desc: "Large-scale banking & financial services environment" },
+                        { icon: "shield-check", label: "Reliability", value: "High", desc: "On-time delivery with high availability & data quality" }
+                    ]
                 },
                 {
                     id: 2,
@@ -399,7 +586,12 @@ def lambda_handler(event, context):
                         "Mappings Migrated": "50+", 
                         "Uptime": "99.9%", 
                         "Cost Savings": "35%" 
-                    }
+                    },
+                    impact: [
+                        { icon: "wallet", label: "Cost Savings", value: "35%", desc: "Lowered cloud processing costs via SQL optimization" },
+                        { icon: "database", label: "Mappings Migrated", value: "50+", desc: "Legacy on-prem Informatica dependencies eliminated" },
+                        { icon: "activity", label: "Pipeline Uptime", value: "99.9%", desc: "Across critical insurance data workflows" }
+                    ]
                 },
                 {
                     id: 3,
@@ -424,7 +616,12 @@ def lambda_handler(event, context):
                         "Runtime Reduction": "40%", 
                         "Alert Improvement": "70%",
                         "Users Managed": "50+"
-                    }
+                    },
+                    impact: [
+                        { icon: "database", label: "Throughput", value: "1M+", desc: "Insurance records processed daily with 99% reliability" },
+                        { icon: "users", label: "Users Governed", value: "50+", desc: "Role-based access via Unity Catalog & workspace governance" },
+                        { icon: "gauge", label: "ETL Speed", value: "40%", desc: "Faster runtimes via partition tuning & query optimization" }
+                    ]
                 },
                 {
                     id: 4,
@@ -446,7 +643,12 @@ def lambda_handler(event, context):
                         "Availability": "99.9%", 
                         "Refresh Improvement": "50%", 
                         "Ops Reduction": "30%" 
-                    }
+                    },
+                    impact: [
+                        { icon: "shield-check", label: "Service Availability", value: "99.9%", desc: "Power BI SRE resolving SEV1/SEV2 incidents globally" },
+                        { icon: "gauge", label: "Refresh Speed", value: "50%", desc: "Faster report refresh via SQL & stored procedure optimization" },
+                        { icon: "workflow", label: "Ops Overhead", value: "30%", desc: "Reduced manual ops via automation & KQL dashboards" }
+                    ]
                 }
             ];
 
@@ -816,6 +1018,24 @@ def lambda_handler(event, context):
                                                     ))}
                                                 </div>
                                             )}
+
+                                            {job.impact && job.impact.length > 0 && (
+                                                <div className={`pt-6 border-t grid grid-cols-1 sm:grid-cols-3 gap-4 ${darkMode ? 'border-gray-800' : 'border-gray-200'}`}>
+                                                    {job.impact.map((item, impIdx) => (
+                                                        <div
+                                                            key={impIdx}
+                                                            className={`p-4 rounded-lg border flex items-start gap-3 transition-all hover:scale-[1.02] ${darkMode ? 'bg-gray-800/40 border-gray-700' : 'bg-white border-gray-200'} shadow`}
+                                                        >
+                                                            <Icon name={item.icon} className="w-6 h-6 text-blue-500 flex-shrink-0 mt-0.5" />
+                                                            <div>
+                                                                <div className="text-lg font-bold bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">{item.value}</div>
+                                                                <div className={`text-xs font-semibold uppercase tracking-wide ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>{item.label}</div>
+                                                                <p className={`text-xs mt-1 leading-relaxed ${darkMode ? 'text-gray-500' : 'text-gray-500'}`}>{item.desc}</p>
+                                                            </div>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            )}
                                         </div>
                                     </div>
                                 ))}
@@ -834,7 +1054,7 @@ def lambda_handler(event, context):
                                     {architectureDiagrams.map(arch => (
                                         <button
                                             key={arch.id}
-                                            onClick={() => setSelectedArchId(arch.id)}
+                                            onClick={() => { setSelectedArchId(arch.id); setSelectedNode(null); }}
                                             className={`px-5 py-2.5 rounded-lg font-semibold transition-all flex items-center gap-2 ${
                                                 selectedArchId === arch.id
                                                     ? 'bg-gradient-to-r from-cyan-600 to-blue-600 text-white shadow-lg scale-105'
@@ -857,12 +1077,20 @@ def lambda_handler(event, context):
                                 </div>
 
                                 {/* Flow Chart Nodes */}
+                                <div className="flex items-center gap-2 mb-3 text-sm">
+                                    <Icon name="mouse-pointer-click" className="w-4 h-4 text-cyan-400" />
+                                    <span className={`${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>Click any node to view tech specs</span>
+                                </div>
                                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 relative">
                                     {currentArch.nodes.map((node, i) => (
-                                        <div
+                                        <button
                                             key={node.id}
-                                            className={`p-5 rounded-xl border relative transition-all hover:scale-105 ${
-                                                darkMode ? 'bg-gray-800/80 border-gray-700 hover:border-cyan-500' : 'bg-white border-gray-200 hover:border-cyan-500'
+                                            onClick={() => setSelectedNode(selectedNode && selectedNode.id === node.id ? null : node)}
+                                            aria-pressed={selectedNode && selectedNode.id === node.id}
+                                            className={`p-5 rounded-xl border relative transition-all hover:scale-105 text-left cursor-pointer ${
+                                                selectedNode && selectedNode.id === node.id
+                                                    ? darkMode ? 'bg-cyan-900/30 border-cyan-500 shadow-cyan-500/20' : 'bg-cyan-50 border-cyan-500 shadow-cyan-500/20'
+                                                    : darkMode ? 'bg-gray-800/80 border-gray-700 hover:border-cyan-500' : 'bg-white border-gray-200 hover:border-cyan-500'
                                             } shadow-md`}
                                         >
                                             <div className="flex items-center justify-between mb-3">
@@ -873,9 +1101,40 @@ def lambda_handler(event, context):
                                             </div>
                                             <h4 className="font-bold text-lg mb-1">{node.title}</h4>
                                             <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>{node.desc}</p>
-                                        </div>
+                                            <span className={`mt-3 inline-flex items-center gap-1 text-xs font-semibold ${selectedNode && selectedNode.id === node.id ? 'text-cyan-400' : darkMode ? 'text-gray-500' : 'text-gray-400'}`}>
+                                                <Icon name={selectedNode && selectedNode.id === node.id ? "chevron-up" : "chevron-down"} className="w-3.5 h-3.5" />
+                                                {selectedNode && selectedNode.id === node.id ? 'Hide specs' : 'View specs'}
+                                            </span>
+                                        </button>
                                     ))}
                                 </div>
+
+                                {/* Node Detail Panel */}
+                                {selectedNode && (
+                                    <div className={`mt-6 p-5 rounded-xl border ${darkMode ? 'bg-cyan-950/30 border-cyan-800' : 'bg-cyan-50 border-cyan-200'} animate-fadeIn`}>
+                                        <div className="flex items-center justify-between mb-4">
+                                            <h4 className="text-lg font-bold flex items-center gap-2">
+                                                <Icon name={selectedNode.icon} className="w-5 h-5 text-cyan-400" />
+                                                {selectedNode.title}
+                                            </h4>
+                                            <span className={`px-3 py-1 rounded-full text-xs font-bold ${darkMode ? 'bg-cyan-900/40 text-cyan-400 border border-cyan-800' : 'bg-cyan-100 text-cyan-700 border border-cyan-300'}`}>
+                                                {selectedNode.category}
+                                            </span>
+                                        </div>
+                                        <p className={`mb-4 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>{selectedNode.desc}</p>
+                                        <div className="flex flex-wrap gap-2">
+                                            {(selectedNode.specs || []).map((spec, specIdx) => (
+                                                <span
+                                                    key={specIdx}
+                                                    className={`px-3 py-1.5 rounded-lg text-sm flex items-center gap-2 ${darkMode ? 'bg-gray-800 text-gray-300 border border-gray-700' : 'bg-white text-gray-700 border border-gray-200'} shadow-sm`}
+                                                >
+                                                    <Icon name="check-circle" className="w-4 h-4 text-cyan-400 flex-shrink-0" />
+                                                    {spec}
+                                                </span>
+                                            ))}
+                                        </div>
+                                    </div>
+                                )}
                             </div>
                         </section>
 
@@ -915,7 +1174,7 @@ def lambda_handler(event, context):
                                 </div>
 
                                 {/* Toggle Toggle Mode */}
-                                <div className="flex gap-2 mb-4">
+                                <div className="flex flex-wrap gap-2 mb-4">
                                     <button
                                         onClick={() => setCodeViewMode('before')}
                                         className={`px-4 py-2 rounded-lg text-sm font-bold transition-all ${
@@ -924,7 +1183,7 @@ def lambda_handler(event, context):
                                                 : darkMode ? 'bg-gray-800 text-gray-400 hover:bg-gray-700' : 'bg-gray-200 text-gray-600'
                                         }`}
                                     >
-                                        ❌ Legacy / Unoptimized Code
+                                        Legacy / Unoptimized Code
                                     </button>
                                     <button
                                         onClick={() => setCodeViewMode('after')}
@@ -934,11 +1193,44 @@ def lambda_handler(event, context):
                                                 : darkMode ? 'bg-gray-800 text-gray-400 hover:bg-gray-700' : 'bg-gray-200 text-gray-600'
                                         }`}
                                     >
-                                        🚀 Optimized Solution (Rajeev's Refactor)
+                                        Optimized Solution (Rajeev's Refactor)
+                                    </button>
+                                    <button
+                                        onClick={() => setCodeViewMode('diff')}
+                                        className={`px-4 py-2 rounded-lg text-sm font-bold transition-all ${
+                                            codeViewMode === 'diff'
+                                                ? 'bg-cyan-600 text-white shadow-md'
+                                                : darkMode ? 'bg-gray-800 text-gray-400 hover:bg-gray-700' : 'bg-gray-200 text-gray-600'
+                                        }`}
+                                    >
+                                        Compare Side-by-Side
                                     </button>
                                 </div>
 
-                                {/* Code Viewer Box */}
+                                {codeViewMode === 'diff' ? (
+                                    /* Side-by-Side Diff View */
+                                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                                        {['before', 'after'].map(mode => (
+                                            <div key={mode} className="rounded-xl overflow-hidden border border-gray-800 bg-gray-950 shadow-2xl">
+                                                <div className="bg-gray-900 px-4 py-3 border-b border-gray-800 flex items-center justify-between">
+                                                    <div className="flex items-center gap-2">
+                                                        <span className={`w-3 h-3 rounded-full ${mode === 'before' ? 'bg-red-500' : 'bg-green-500'} inline-block`}></span>
+                                                        <span className="text-xs text-gray-400 font-mono ml-2">
+                                                            {currentCode[mode].tech}
+                                                        </span>
+                                                    </div>
+                                                    <span className={`text-xs font-bold uppercase ${mode === 'before' ? 'text-rose-400' : 'text-emerald-400'}`}>
+                                                        {mode === 'before' ? 'Legacy Code' : 'Optimized Code'}
+                                                    </span>
+                                                </div>
+                                                <pre className={`p-6 text-sm font-mono overflow-x-auto leading-relaxed ${mode === 'before' ? 'text-rose-300' : 'text-emerald-400'}`}>
+                                                    <code>{currentCode[mode].code}</code>
+                                                </pre>
+                                            </div>
+                                        ))}
+                                    </div>
+                                ) : (
+                                /* Code Viewer Box */
                                 <div className="rounded-xl overflow-hidden border border-gray-800 bg-gray-950 shadow-2xl">
                                     <div className="bg-gray-900 px-4 py-3 border-b border-gray-800 flex items-center justify-between">
                                         <div className="flex items-center gap-2">
@@ -953,10 +1245,102 @@ def lambda_handler(event, context):
                                             {codeViewMode === 'before' ? 'Legacy Code' : 'Optimized Production Code'}
                                         </span>
                                     </div>
-                                    <pre className="p-6 text-sm font-mono text-emerald-400 overflow-x-auto leading-relaxed">
+                                    <pre className={`p-6 text-sm font-mono overflow-x-auto leading-relaxed ${codeViewMode === 'before' ? 'text-rose-300' : 'text-emerald-400'}`}>
                                         <code>{currentCode[codeViewMode].code}</code>
                                     </pre>
                                 </div>
+                                )}
+
+                                {/* Execution Time Visualization Dashboard */}
+                                <div className={`mt-6 rounded-xl border p-5 ${darkMode ? 'bg-gray-900/50 border-gray-800' : 'bg-white border-gray-200'}`}>
+                                    <div className="flex items-center justify-between mb-4">
+                                        <h4 className="font-bold flex items-center gap-2">
+                                            <Icon name="bar-chart-3" className="w-5 h-5 text-emerald-500" />
+                                            Execution Time Dashboard
+                                        </h4>
+                                        <span className={`px-3 py-1 rounded-full text-xs font-bold ${darkMode ? 'bg-emerald-900/30 text-emerald-400 border border-emerald-800' : 'bg-emerald-100 text-emerald-700 border border-emerald-200'}`}>
+                                            {chartData[currentCode.id] ? `${((1 - chartData[currentCode.id].after / chartData[currentCode.id].before) * 100).toFixed(0)}% faster` : ''}
+                                        </span>
+                                    </div>
+                                    <div className="h-56">
+                                        <canvas ref={barChartRef} aria-label="Execution time before and after optimization bar chart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        {/* Pipeline Cost Calculator */}
+                        <section className="mb-16">
+                            <div className="flex items-center gap-3 mb-8">
+                                <Icon name="calculator" className="w-8 h-8 text-orange-500" />
+                                <h2 className="text-3xl font-bold">Pipeline Cost Calculator</h2>
+                            </div>
+
+                            <div className={`rounded-xl border p-6 sm:p-8 ${darkMode ? 'bg-gradient-to-br from-gray-900/90 to-gray-800/90 border-gray-800' : 'bg-gradient-to-br from-white to-gray-50 border-gray-200'} shadow-xl`}>
+                                <p className={`mb-6 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                                    Modeled on real Databricks / AWS optimization outcomes from the CHUBB migration. Drag the slider to see monthly cloud spend before and after optimization.
+                                </p>
+
+                                <div className="mb-8">
+                                    <div className="flex items-center justify-between mb-3">
+                                        <label htmlFor="volume-slider" className="font-semibold flex items-center gap-2">
+                                            <Icon name="database" className="w-5 h-5 text-orange-500" />
+                                            Records processed per day
+                                        </label>
+                                        <span className={`px-3 py-1 rounded-lg font-bold text-orange-400 ${darkMode ? 'bg-orange-900/30 border border-orange-800' : 'bg-orange-100 border border-orange-200'}`}>
+                                            {recordVolume}M
+                                        </span>
+                                    </div>
+                                    <input
+                                        id="volume-slider"
+                                        type="range"
+                                        min="0.5"
+                                        max="10"
+                                        step="0.5"
+                                        value={recordVolume}
+                                        onChange={(e) => setRecordVolume(parseFloat(e.target.value))}
+                                        className="w-full accent-orange-500"
+                                        aria-label="Records processed per day in millions"
+                                    />
+                                    <div className="flex justify-between text-xs mt-1">
+                                        <span className={darkMode ? 'text-gray-500' : 'text-gray-400'}>0.5M</span>
+                                        <span className={darkMode ? 'text-gray-500' : 'text-gray-400'}>10M</span>
+                                    </div>
+                                </div>
+
+                                {(() => {
+                                    const monthlyBefore = Math.round(recordVolume * costModel.beforePerMillion * 30);
+                                    const monthlyAfter = Math.round(recordVolume * costModel.afterPerMillion * 30);
+                                    const monthlySavings = monthlyBefore - monthlyAfter;
+                                    return (
+                                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                                            <div className={`p-5 rounded-xl border ${darkMode ? 'bg-rose-950/30 border-rose-800' : 'bg-rose-50 border-rose-200'} shadow-lg`}>
+                                                <div className="flex items-center gap-2 mb-2 text-rose-400 font-semibold">
+                                                    <Icon name="x-circle" className="w-5 h-5" />
+                                                    Before Optimization
+                                                </div>
+                                                <div className="text-3xl font-bold">${monthlyBefore.toLocaleString()}<span className="text-sm font-normal text-rose-400">/mo</span></div>
+                                                <div className={`text-xs mt-1 ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>Estimated compute + storage spend</div>
+                                            </div>
+                                            <div className={`p-5 rounded-xl border ${darkMode ? 'bg-emerald-950/30 border-emerald-800' : 'bg-emerald-50 border-emerald-200'} shadow-lg`}>
+                                                <div className="flex items-center gap-2 mb-2 text-emerald-400 font-semibold">
+                                                    <Icon name="check-circle" className="w-5 h-5" />
+                                                    After Optimization
+                                                </div>
+                                                <div className="text-3xl font-bold">${monthlyAfter.toLocaleString()}<span className="text-sm font-normal text-emerald-400">/mo</span></div>
+                                                <div className={`text-xs mt-1 ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>With Databricks + Delta Lake tuning</div>
+                                            </div>
+                                            <div className={`p-5 rounded-xl border ${darkMode ? 'bg-cyan-950/30 border-cyan-800' : 'bg-cyan-50 border-cyan-200'} shadow-lg`}>
+                                                <div className="flex items-center gap-2 mb-2 text-cyan-400 font-semibold">
+                                                    <Icon name="trending-down" className="w-5 h-5" />
+                                                    Your Monthly Savings
+                                                </div>
+                                                <div className="text-3xl font-bold text-cyan-400">${monthlySavings.toLocaleString()}<span className="text-sm font-normal text-cyan-400">/mo</span></div>
+                                                <div className={`text-xs mt-1 ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>{Math.round((1 - monthlyAfter / monthlyBefore) * 100)}% cost reduction at this volume</div>
+                                            </div>
+                                        </div>
+                                    );
+                                })()}
                             </div>
                         </section>
 
@@ -987,6 +1371,17 @@ def lambda_handler(event, context):
                                         </div>
                                     </div>
                                 ))}
+                            </div>
+
+                            {/* Skill Proficiency Radar Chart */}
+                            <div className={`mt-8 rounded-xl border p-6 sm:p-8 ${darkMode ? 'bg-gradient-to-br from-gray-900/90 to-gray-800/90 border-gray-800' : 'bg-gradient-to-br from-white to-gray-50 border-gray-200'} shadow-xl`}>
+                                <h3 className="text-lg font-bold mb-1 bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent">Skill Proficiency Map</h3>
+                                <p className={`text-sm mb-6 ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+                                    Self-rated depth across core data engineering disciplines (1-5 scale)
+                                </p>
+                                <div className="h-96 max-w-xl mx-auto">
+                                    <canvas ref={radarChartRef} aria-label="Skill proficiency radar chart"></canvas>
+                                </div>
                             </div>
                         </section>
 
@@ -1051,11 +1446,15 @@ def lambda_handler(event, context):
                     {showRecruiterModal && (
                         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md" onClick={() => setShowRecruiterModal(false)}>
                             <div
+                                ref={modalRef}
+                                role="dialog"
+                                aria-modal="true"
+                                aria-labelledby="recruiter-modal-title"
                                 className={`max-w-2xl w-full rounded-2xl p-8 border ${darkMode ? 'bg-gradient-to-br from-gray-900 to-gray-800 border-gray-800' : 'bg-gradient-to-br from-white to-gray-50 border-gray-200'} shadow-2xl`}
                                 onClick={(e) => e.stopPropagation()}
                             >
                                 <div className="flex items-center justify-between mb-6">
-                                    <h2 className="text-2xl font-bold flex items-center gap-2">
+                                    <h2 id="recruiter-modal-title" className="text-2xl font-bold flex items-center gap-2">
                                         <Icon name="zap" className="w-7 h-7 text-yellow-500" />
                                         <span className="bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
                                             Recruiter 1-Minute Highlight

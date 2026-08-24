@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { Menu, X, User, LayoutDashboard, LogOut, Phone, Mail, MapPin, Clock } from 'lucide-react'
 import { supabase } from './lib/supabase'
 import { SCHOOL_INFO } from './lib/school-info'
+import DateTimeWidget from './DateTimeWidget'
 
 const LOGO_URL = 'https://i.postimg.cc/xCCf0gxP/prod-temp-4ee49e0f-a3df-41ec-b9d4-b2f28e8e23bb-9ea92f409a1706133ed49b9433f1ab25.webp'
 
@@ -67,17 +68,14 @@ export default function Navbar() {
             </span>
           </div>
           <div className="flex items-center gap-6 shrink-0">
-            <span className="flex items-center gap-1.5">
+            <DateTimeWidget />
+            <span className="hidden lg:flex items-center gap-1.5">
               <Phone size={13} className="text-db-gold shrink-0" />
               <a href={`tel:${SCHOOL_INFO.phone.replace(/\s/g, '')}`} className="hover:text-db-gold transition-colors">{SCHOOL_INFO.phone}</a>
             </span>
-            <span className="flex items-center gap-1.5">
+            <span className="hidden xl:flex items-center gap-1.5">
               <Mail size={13} className="text-db-gold shrink-0" />
               <a href={`mailto:${SCHOOL_INFO.email}`} className="hover:text-db-gold transition-colors">{SCHOOL_INFO.email}</a>
-            </span>
-            <span className="flex items-center gap-1.5">
-              <Clock size={13} className="text-db-gold shrink-0" />
-              {SCHOOL_INFO.schoolHours}
             </span>
           </div>
         </div>

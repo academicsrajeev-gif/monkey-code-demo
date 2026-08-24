@@ -59,7 +59,8 @@ export default function Navbar() {
 
   return (
     <>
-      <div className="hidden lg:block bg-db-navy border-b border-white/10 text-xs text-blue-100">
+      {/* Top info bar — visible on md+ screens */}
+      <div className="hidden md:block bg-db-navy border-b border-white/10 text-xs text-blue-100">
         <div className="max-w-7xl mx-auto px-4 h-9 flex items-center justify-between gap-4">
           <div className="flex items-center gap-6 min-w-0">
             <span className="flex items-center gap-1.5 truncate">
@@ -67,7 +68,7 @@ export default function Navbar() {
               {SCHOOL_INFO.address.full}
             </span>
           </div>
-          <div className="flex items-center gap-6 shrink-0">
+          <div className="flex items-center gap-4 shrink-0">
             <DateTimeWidget />
             <span className="hidden lg:flex items-center gap-1.5">
               <Phone size={13} className="text-db-gold shrink-0" />
@@ -80,7 +81,7 @@ export default function Navbar() {
           </div>
         </div>
       </div>
-      <nav className={`sticky top-10 z-50 text-white transition-all duration-300 ${scrolled || open ? 'glass shadow-lg' : 'bg-db-navy'}`}>
+      <nav className={`sticky top-0 md:top-9 z-50 text-white transition-all duration-300 ${scrolled || open ? 'glass shadow-lg' : 'bg-db-navy'}`}>
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           <Link to="/" className="flex items-center gap-2 group">
@@ -90,6 +91,11 @@ export default function Navbar() {
               <div className="text-xs text-blue-200">Hathaura</div>
             </div>
           </Link>
+
+          {/* Compact clock — visible on small screens only */}
+          <div className="md:hidden">
+            <DateTimeWidget />
+          </div>
 
           <div className="hidden xl:flex items-center gap-1">
             {isApp ? (

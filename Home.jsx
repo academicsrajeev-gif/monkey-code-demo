@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import { ArrowRight, Users, Award, TreePine, Shield, BookOpen, CalendarCheck, Phone, MapPin, Trophy, Star, Medal, LogIn, Megaphone, CalendarDays, Camera, PhoneCall, LayoutDashboard, Pin } from 'lucide-react'
-import Chatbot from '../../components/Chatbot'
-import { demoData } from '../../lib/supabase'
+import Chatbot from './Chatbot'
+import { demoData } from './lib/supabase'
 
 const features = [
   { icon: Users, title: 'Play to Class VI', desc: 'Nurturing young minds from Playgroup through Class 6 with age-appropriate curriculum.' },

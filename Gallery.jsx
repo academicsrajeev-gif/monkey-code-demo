@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { supabase } from './lib/supabase'
+import { supabase, demoData } from './lib/supabase'
 import { Upload, Trash2, Image as ImageIcon, Loader, Plus, X, Lock } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
@@ -14,6 +14,7 @@ export default function Gallery() {
   const [file, setFile] = useState(null)
   const [message, setMessage] = useState('')
   const [activeFilter, setActiveFilter] = useState('All')
+  const [loading, setLoading] = useState(true)
 
   const categories = ['Events', 'Sports', 'Campus', 'Activities']
   const filters = ['All', ...categories]
@@ -24,26 +25,47 @@ export default function Gallery() {
   }, [])
 
   async function checkUser() {
-    const { data: { user } } = await supabase.auth.getUser()
-    setUser(user)
-    if (!user) return
-    const { data } = await supabase
-      .from('user_profiles')
-      .select('role')
-      .eq('id', user.id)
-      .maybeSingle()
-    setIsAdmin(data?.role === 'admin' || data?.role === 'principal')
+    try {
+      const { data: { user } } = await supabase.auth.getUser()
+      setUser(user)
+      if (!user) return
+      const { data } = await supabase
+        .from('user_profiles')
+        .select('role')
+        .eq('id', user.id)
+        .maybeSingle()
+      setIsAdmin(data?.role === 'admin' || data?.role === 'principal')
+    } catch (err) {
+      console.error('Auth check error:', err)
+    }
   }
 
   async function loadPhotos() {
-    const { data, error } = await supabase
-      .from('gallery')
-      .select('*')
-      .order('created_at', { ascending: false })
-    if (error) {
-      console.error('Error loading photos:', error.message)
+    setLoading(true)
+    try {
+      const { data, error } = await supabase
+        .from('gallery')
+        .select('*')
+        .order('created_at', { ascending: false })
+      if (error) {
+        console.error('Error loading photos:', error.message)
+        setPhotos(demoData.gallery)
+      } else if (data && data.length > 0) {
+        // Normalize: ensure category is never null
+        const normalized = data.map(p => ({
+          ...p,
+          category: p.category || 'Events'
+        }))
+        setPhotos(normalized)
+      } else {
+        setPhotos(demoData.gallery)
+      }
+    } catch (err) {
+      console.error('Gallery load error:', err)
+      setPhotos(demoData.gallery)
+    } finally {
+      setLoading(false)
     }
-    if (data) setPhotos(data)
   }
 
   async function handleUpload(e) {
@@ -219,10 +241,15 @@ export default function Gallery() {
           </div>
         )}
 
-        {filteredPhotos.length === 0 ? (
+        {loading ? (
+          <div className="text-center py-16">
+            <Loader size={48} className="mx-auto text-gray-400 mb-3 animate-spin" />
+            <p className="text-gray-500">Loading photos...</p>
+          </div>
+        ) : filteredPhotos.length === 0 ? (
           <div className="text-center py-16">
             <ImageIcon size={48} className="mx-auto text-gray-400 mb-3" />
-            <p className="text-gray-500">No photos yet. Check back soon!</p>
+            <p className="text-gray-500">No photos in this category. Try "All" to see all photos.</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">

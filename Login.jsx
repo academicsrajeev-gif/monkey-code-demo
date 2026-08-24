@@ -5,8 +5,8 @@ import { supabase } from './lib/supabase'
 
 export default function Login() {
   const [role, setRole] = useState('admin')
-  const [email, setEmail] = useState('admin@donbosco.edu.in')
-  const [password, setPassword] = useState('admin123')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const navigate = useNavigate()
@@ -48,16 +48,8 @@ export default function Login() {
   const fillDemo = (selectedRole) => {
     setRole(selectedRole)
     setError('')
-    if (selectedRole === 'admin') {
-      setEmail('admin@donbosco.edu.in')
-      setPassword('admin123')
-    } else if (selectedRole === 'teacher') {
-      setEmail('teacher@donbosco.edu.in')
-      setPassword('teacher123')
-    } else {
-      setEmail('parent@donbosco.edu.in')
-      setPassword('parent123')
-    }
+    setEmail('')
+    setPassword('')
   }
 
   return (
@@ -142,8 +134,7 @@ export default function Login() {
         </form>
 
         <div className="mt-6 text-center text-xs text-gray-500">
-          Test Credentials: <br />
-          <span className="font-mono text-blue-600">admin@donbosco.edu.in / admin123</span>
+          Contact the school office for login credentials.
         </div>
       </div>
     </div>
